@@ -10,7 +10,29 @@ CDI enabled Java Command-Bus
 
 ## Usage (CDI)
 
-* This library on the classpath triggers the CDI extension that finds all `CommandHandler`s and registeres them with the appropriate `Command` in the `Registry`.
+You can use JitPack to configure command-bus as a dependency in your project.<br/>
+For example when using maven, define the JitPack repository:
+
+```XML
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+```
+And the command-bus dependency:
+
+```XML
+<dependency>
+    <groupId>com.github.triologygmbh</groupId>
+    <artifactId>command-bus</artifactId>
+   <version>348c18dfc1</version>
+</dependency>
+```
+For further details and options refer to the [JitPack website](https://jitpack.io/#triologygmbh/command-bus).
+
+* Having the command-bus dependency on the classpath triggers the CDI extension that finds all `CommandHandler`s and registeres them with the appropriate `Command` in the `Registry`.
 * Provide a Producer for the `CommandBus` that brings together `Registry` and `CDICommandBus`.
   This producer is the central place where decorators can be instantiated.
   See `CommandBusFactory` in tests, for example.

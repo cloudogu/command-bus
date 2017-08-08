@@ -66,7 +66,7 @@ public class CDIExtension implements Extension {
    * @param event cdi event
    * @param beanManager cdi bean manager
    */
-  public void register(@Observes AfterBeanDiscovery event, final BeanManager beanManager) {
+  public void register(@Observes AfterDeploymentValidation event, final BeanManager beanManager) {
     Registry registry = getRegistry(beanManager);
     commandHandlers.forEach((commandClass, handlerClass) -> {
       registry.register(commandClass, new CommandProvider(beanManager, handlerClass));

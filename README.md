@@ -3,9 +3,9 @@ CDI enabled Java Command-Bus
 
 ## Concepts
 
-* `Command` - Marker Interface
-* `CommandHandler` - One Implementation per `Command`. Provides `handle(CommandImplementation)` Method.
-* `CommandBus` - Finds and calls the `CommandHandler` for each `Command`.
+* [`Command`](src/main/java/de/triology/cb/Command.java) - Marker Interface
+* [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java) - One Implementation per `Command`. Provides `handle(CommandImplementation)` Method.
+* [`CommandBus`](src/main/java/de/triology/cb/CommandBus.java) - Finds and calls the `CommandHandler` for each `Command`.
 * `CommandBus` can be decorated, in order to implement cross-cutting concerns, such as logging, transaction handling, validation, autorization, metrics etc.
 
 ## Usage (CDI)
@@ -40,7 +40,7 @@ For further details and options refer to the [JitPack website](https://jitpack.i
   
 ## Command Bus Decorators
 
-First example is the logging decorator (`LoggingCommandBus`) that logs entering and leaving (including time of execution) of `CommandHandler`s.
+First example is the logging decorator ([`LoggingCommandBus`](src/main/java/de/triology/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
 
 ## Future Tasks
 

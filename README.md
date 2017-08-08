@@ -42,6 +42,7 @@ For further details and options refer to the [JitPack website](https://jitpack.i
 
 First example is the logging decorator ([`LoggingCommandBus`](src/main/java/de/triology/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
 
-## Future Tasks
+## Return values
 
-* Return typed value from `CommandHandler.handle()`?
+* `Command`s can specify return values. See [`HelloCommand`](src/test/java/de/triology/cb/HelloCommand.java) and  [`HelloCommandHandler`](src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
+* If you don't want a return value, use `Void`. See [`ByeCommand`](src/test/java/de/triology/cb/ByeCommand.java) and  [`ByeCommandHandler`](src/test/java/de/triology/cb/ByeCommandHandler.java) for example.

@@ -63,9 +63,12 @@ public class CDIITCase {
 
   @Test
   public void execute() {
-    commandBus.execute(new HelloCommand("hans"));
-    commandBus.execute(new ByeCommand("hans"));
+    String actualStringReturnValue = commandBus.execute(new HelloCommand("hans"));
+    Void actualVoidReturnValue = commandBus.execute(new ByeCommand("hans"));
 
     assertThat(messageCollector.getMessages()).contains("hello hans", "bye hans");
+
+    assertThat(actualStringReturnValue).isEqualTo("hello hans");
+    assertThat(actualVoidReturnValue).isNull();
   }
 }

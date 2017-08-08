@@ -26,15 +26,17 @@ package de.triology.cb;
 /**
  * A handler for a {@link Command}.
  *
+ * @param <R> type of return value
  * @param <C> type of command
  */
-public interface CommandHandler<C extends Command> {
+public interface CommandHandler<R, C extends Command<R>> {
 
   /**
    * Handles the command.
    *
    * @param command command to handle
+   * @return an optional return value as specified in {@link Command}
    */
-  void handle(C command);
+  R handle(C command);
 
 }

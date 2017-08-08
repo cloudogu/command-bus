@@ -25,13 +25,14 @@ package de.triology.cb;
 
 import javax.inject.Inject;
 
-public class ByeCommandHandler implements CommandHandler<ByeCommand> {
+public class ByeCommandHandler implements CommandHandler<Void, ByeCommand> {
 
   @Inject
   private MessageCollector messageCollector;
 
   @Override
-  public void handle(ByeCommand command) {
+  public Void handle(ByeCommand command) {
     messageCollector.add("bye " + command.getName());
+    return null;
   }
 }

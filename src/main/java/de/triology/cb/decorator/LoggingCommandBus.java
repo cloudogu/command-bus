@@ -47,12 +47,14 @@ public class LoggingCommandBus implements CommandBus {
   }
 
   @Override
-  public <C extends Command> void execute(C command) {
+  public <R, C extends Command<R>> R execute(C command) {
     LOG.info("start command {}", command.getClass().getSimpleName());
 
     Timer timer = new Timer();
-    decorated.execute(command);
+    R returnValue = decorated.execute(command);
 
     LOG.info("finished command {} in {}", command.getClass().getSimpleName(), timer);
+
+    return returnValue;
   }
 }

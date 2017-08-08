@@ -23,7 +23,7 @@
  */
 package de.triology.cb;
 
-public class ByeCommand implements Command {
+public class ByeCommand implements Command<Void> {
 
   private final String name;
 

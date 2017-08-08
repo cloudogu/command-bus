@@ -40,7 +40,7 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class CDIExtension implements Extension {
 
-  private Map<Class<? extends Command>, Class<? extends CommandHandler<?>>> commandHandlers = new HashMap<>();
+  private Map<Class<? extends Command>, Class<? extends CommandHandler<?,?>>> commandHandlers = new HashMap<>();
 
   /**
    * Captures all command handlers.
@@ -48,14 +48,14 @@ public class CDIExtension implements Extension {
    * @param target cdi event
    * @param <H> handler type
    */
-  public <H extends CommandHandler<?>> void captureCommandHandlers(@Observes ProcessInjectionTarget<H> target) {
+  public <H extends CommandHandler<?, ?>> void captureCommandHandlers(@Observes ProcessInjectionTarget<H> target) {
     Class<H> handler = target.getAnnotatedType().getJavaClass();
     for ( Type type : target.getAnnotatedType().getTypeClosure() ) {
       if (type instanceof ParameterizedType) {
         ParameterizedType parameterizedType = (ParameterizedType) type;
-        Type genericParameterType = parameterizedType.getActualTypeArguments()[0];
+        Type genericParameterType = parameterizedType.getActualTypeArguments()[1];
         if (genericParameterType instanceof Class) {
-          register((Class<? extends Command>) genericParameterType, handler);
+          register((Class<? extends Command<?>>) genericParameterType, handler);
         }
       }
     }
@@ -73,7 +73,7 @@ public class CDIExtension implements Extension {
     });
   }
 
-  private void register(Class<? extends Command> command, Class<? extends CommandHandler<?>> handler) {
+  private void register(Class<? extends Command<?>> command, Class<? extends CommandHandler<?, ?>> handler) {
     commandHandlers.put(command, handler);
   }
 

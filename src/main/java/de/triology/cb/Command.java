@@ -25,7 +25,9 @@ package de.triology.cb;
 
 /**
  * Marker interface for commands.
+ * @param <R> type of return value
  */
-public interface Command {
+@SuppressWarnings({"unused", "squid:S2326" }) // Return value is used by CommandBus
+public interface Command<R> {
 
 }

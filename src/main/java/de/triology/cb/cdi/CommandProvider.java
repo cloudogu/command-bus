@@ -36,12 +36,12 @@ import javax.inject.Provider;
  * @param <H> type of handler
  */
 @SuppressWarnings("unchecked")
-public class CommandProvider<H extends CommandHandler<?>> implements Provider<H> {
+public class CommandProvider<H extends CommandHandler<?, ?>> implements Provider<H> {
 
   private final BeanManager beanManager;
   private final Class<? extends CommandHandler> handlerClass;
 
-  CommandProvider(BeanManager beanManager, Class<? extends CommandHandler<?>> handlerClass) {
+  CommandProvider(BeanManager beanManager, Class<? extends CommandHandler<?, ?>> handlerClass) {
     this.beanManager = beanManager;
     this.handlerClass = handlerClass;
   }

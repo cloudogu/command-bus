@@ -43,7 +43,7 @@ public class Registry {
   }
 
   @SuppressWarnings("unchecked")
-  <C extends Command> CommandHandler<C> get(Class<C> commandClass) {
+  <R, C extends Command<R>> CommandHandler<R,C> get(Class<C> commandClass) {
     return providerMap.get(commandClass).get();
   }
 

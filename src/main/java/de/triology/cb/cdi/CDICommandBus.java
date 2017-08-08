@@ -50,8 +50,8 @@ public class CDICommandBus implements CommandBus {
   }
 
   @Override
-  public <C extends Command> void execute(C command) {
-    CommandHandler<C> commandHandler = (CommandHandler<C>) registry.get(command.getClass());
-    commandHandler.handle(command);
+  public <R, C extends Command<R>> R execute(C command) {
+    CommandHandler<R, C> commandHandler = (CommandHandler<R, C>) registry.get(command.getClass());
+    return commandHandler.handle(command);
   }
 }

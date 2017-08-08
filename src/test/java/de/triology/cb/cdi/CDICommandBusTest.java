@@ -43,7 +43,7 @@ public class CDICommandBusTest {
   private Registry registry;
 
   @Mock
-  private CommandHandler<HelloCommand> handler;
+  private CommandHandler<String, HelloCommand> handler;
 
   @InjectMocks
   private CDICommandBus commandBus;

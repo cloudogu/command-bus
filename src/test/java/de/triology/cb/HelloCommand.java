@@ -23,7 +23,7 @@
  */
 package de.triology.cb;
 
-public class HelloCommand implements Command {
+public class HelloCommand implements Command<String> {
 
   private final String name;
 

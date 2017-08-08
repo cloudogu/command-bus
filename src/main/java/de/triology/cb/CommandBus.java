@@ -32,8 +32,9 @@ public interface CommandBus {
    * Searches the handler and passes the command to it.
    *
    * @param command command object
+   * @param <R> type of return value
    * @param <C> type of command
    */
-  <C extends Command> void execute(C command);
+  <R,C extends Command<R>> R execute(C command);
 
 }

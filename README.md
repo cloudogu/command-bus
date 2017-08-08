@@ -32,11 +32,11 @@ And the command-bus dependency:
 ```
 For further details and options refer to the [JitPack website](https://jitpack.io/#triologygmbh/command-bus).
 
-* Having the command-bus dependency on the classpath triggers the CDI extension that finds all `CommandHandler`s and registeres them with the appropriate `Command` in the `Registry`.
-* Provide a Producer for the `CommandBus` that brings together `Registry` and `CDICommandBus`.
+* Having the command-bus dependency on the classpath triggers the CDI extension that finds all [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java)s and registeres them with the appropriate [`Command`](src/main/java/de/triology/cb/Command.java) in the [`Registry`](src/main/java/de/triology/cb/cdi/Registry.java).
+* Provide a Producer for the [`CommandBus`](src/main/java/de/triology/cb/CommandBus.java) that brings together [`Registry`](src/main/java/de/triology/cb/cdi/Registry.java) and [`CDICommandBus`](src/main/java/de/triology/cb/cdi/CDICommandBus.java).
   This producer is the central place where decorators can be instantiated.
-  See `CommandBusFactory` in tests, for example.
-* Implement your `Command`s and `CommandHandler`s. See `CDIITCase`.
+  See [`CommandBusFactory`](src/test/java/de/triology/cb/cdi/CommandBusFactory.java) in tests, for example.
+* Implement your [`Command`](src/main/java/de/triology/cb/Command.java)s and [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java)s. See [`CDIITCase`](src/test/java/de/triology/cb/cdi/CDIITCase.java).
   
 ## Command Bus Decorators
 

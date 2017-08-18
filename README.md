@@ -1,4 +1,7 @@
 # command-bus
+[![Build Status](https://opensource.triology.de/jenkins/buildStatus/icon?job=triologygmbh-github/command-bus/master)](https://opensource.triology.de/jenkins/job/triologygmbh-github/job/command-bus/job/master/)
+[![JitPack](https://jitpack.io/v/triologygmbh/command-bus.svg)](https://jitpack.io/#triologygmbh/command-bus)
+
 CDI enabled Java Command-Bus
 
 ## Concepts
@@ -27,7 +30,7 @@ And the command-bus dependency:
 <dependency>
     <groupId>com.github.triologygmbh</groupId>
     <artifactId>command-bus</artifactId>
-   <version>348c18dfc1</version>
+   <version>0.1.0</version>
 </dependency>
 ```
 For further details and options refer to the [JitPack website](https://jitpack.io/#triologygmbh/command-bus).

@@ -224,7 +224,10 @@
         <version>3.0</version>
         <configuration>
           <header>LICENSE</header>
-          <excludes><exclude>**/VisibleForTesting.java</exclude></excludes>
+          <excludes>
+            <exclude>LICENSE</exclude>
+            <exclude>Jenkinsfile</exclude>
+          </excludes>
         </configuration>
         <executions>
           <execution>

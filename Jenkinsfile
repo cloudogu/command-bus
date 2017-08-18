@@ -5,13 +5,11 @@ import com.cloudogu.ces.cesbuildlib.*
 node {
 
   properties([
-    // Keep only the last 10 build to preserve space
+    // Keep only the most recent builds in order to preserve space
     buildDiscarder(logRotator(numToKeepStr: '20')),
     // Don't run concurrent builds for a branch, because they use the same workspace directory
     disableConcurrentBuilds()
   ])
-
-  String emailRecipients = env.EMAIL_RECIPIENTS_COMMAND_BUS
 
   catchError {
 
@@ -22,7 +20,7 @@ node {
     Git git = new Git(this)
 
     stage('Checkout') {
-      git 'https://github.com/triologygmbh/command-bus'
+      checkout scm
       /* Don't remove folders starting in "." like
        * .m2 (maven), .npm, .cache, .local (bower)
        */
@@ -39,9 +37,8 @@ node {
     }
 
     stage('Integration Test') {
-      mvn "verify"
+      mvn "verify -DskipUnitTests"
     }
-
   }
 
   // Archive Unit and integration test results, if any
@@ -51,5 +48,5 @@ node {
   // Find maven warnings and visualize in job
   warnings consoleParsers: [[parserName: 'Maven']]
 
-  mailIfStatusChanged(emailRecipients)
+  mailIfStatusChanged(env.EMAIL_RECIPIENTS_COMMAND_BUS)
 }

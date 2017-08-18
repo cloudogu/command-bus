@@ -203,6 +203,16 @@
       </plugin>
 
       <plugin>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+          <!-- skips surefire tests without skipping failsafe tests.
+           Property value seems to magically default to false -->
+          <skipTests>${skipUnitTests}</skipTests>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
         <version>3.0.1</version>
@@ -268,6 +278,10 @@
 
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+
+    <!-- Possibility to skip only the unit test. Can be useful when running only integration tests.
+    This can be used from the command line as follows: mvn <goals> -DskipUnitTests -->
+    <skipUnitTests>${skipTests}</skipUnitTests>
   </properties>
 
 </project>

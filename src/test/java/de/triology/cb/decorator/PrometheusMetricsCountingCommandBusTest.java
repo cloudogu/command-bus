@@ -29,17 +29,15 @@ import io.prometheus.client.Counter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PrometheusMetricsCommandBusTest {
+public class PrometheusMetricsCountingCommandBusTest {
 
   @Mock
   private CommandBus decorated;
@@ -50,12 +48,12 @@ public class PrometheusMetricsCommandBusTest {
   @Mock
   private Counter.Child child;
 
-  private PrometheusMetricsCommandBus commandBus;
+  private PrometheusMetricsCountingCommandBus commandBus;
 
   @Before
   public void setUp() throws Exception {
     when(counter.labels(HelloCommand.class.getName())).thenReturn(child);
-    this.commandBus = new PrometheusMetricsCommandBus(decorated, counter);
+    this.commandBus = new PrometheusMetricsCountingCommandBus(decorated, counter);
   }
 
   @Test

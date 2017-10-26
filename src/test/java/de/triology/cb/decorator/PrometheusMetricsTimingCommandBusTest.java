@@ -23,40 +23,50 @@
  */
 package de.triology.cb.decorator;
 
-import de.triology.cb.Command;
 import de.triology.cb.CommandBus;
+import de.triology.cb.HelloCommand;
 import io.prometheus.client.Counter;
+import io.prometheus.client.Histogram;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-/**
- * Command bus decorator counting the executed commands using a Prometheus {@link Counter}
- */
-public class PrometheusMetricsCommandBus implements CommandBus {
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
+public class PrometheusMetricsTimingCommandBusTest {
+  @Mock
   private CommandBus decorated;
-  private final Counter counter;
 
-  /**
-   * Creates a new PrometheusMetricsCommandBus
-   *
-   * @param decorated command bus to decorate
-   * @param counter counter to increment on executing commands
-   */
-  public PrometheusMetricsCommandBus(CommandBus decorated, Counter counter) {
-    this.decorated = decorated;
-    this.counter = counter;
+  @Mock
+  private Histogram histogram;
+
+  @Mock
+  private Histogram.Child child;
+
+  @Mock
+  private Histogram.Timer timer;
+
+  private PrometheusMetricsTimingCommandBus commandBus;
+
+  @Before
+  public void setUp() throws Exception {
+    when(histogram.labels(HelloCommand.class.getSimpleName())).thenReturn(child);
+    when(child.startTimer()).thenReturn(timer);
+    commandBus = new PrometheusMetricsTimingCommandBus(decorated, histogram);
   }
 
-  /**
-   * Delegates the provided command to the decorated command bus and increases the given counter using the command's
-   * classname as a label
-   * @param command command object
-   * @param <R> type of return value
-   * @param <C> type of command
-   */
-  @Override
-  public <R, C extends Command<R>> R execute(C command) {
-    counter.labels(command.getClass().getSimpleName()).inc();
-    return decorated.execute(command);
+  @Test
+  public void execute() throws Exception {
+    HelloCommand helloCommand = new HelloCommand("July");
+    commandBus.execute(helloCommand);
+    verify(histogram).labels(HelloCommand.class.getSimpleName());
+    verify(decorated).execute(helloCommand);
+    verify(timer).observeDuration();
   }
 
 }

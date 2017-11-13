@@ -48,6 +48,7 @@ First example is the logging decorator ([`LoggingCommandBus`](src/main/java/de/t
 ### Prometheus metric decorators
 The Triology Command Bus provides two Prometheus metrics decorators. More information on Prometheus can be found on the
 project's [website](https://prometheus.io).
+In order to use them, make sure to provide the `io.prometheus:simpleclient` dependency on the classpath.
 
 #### PrometheusMetricsCountingCommandBus
 The `PrometheusMetricsCountingCommandBus` counts every executed command, using a Prometheus Counter. 

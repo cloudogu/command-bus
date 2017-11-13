@@ -49,6 +49,7 @@ public class PrometheusMetricsTimingCommandBus implements CommandBus {
   /**
    * Delegates the provided command to the decorated command bus and times the command's execution using it's
    * classname as a label
+   *
    * @param command command object
    * @param <R> type of return value
    * @param <C> type of command

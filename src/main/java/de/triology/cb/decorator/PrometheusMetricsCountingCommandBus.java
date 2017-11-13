@@ -33,7 +33,7 @@ import io.prometheus.client.Counter;
 public class PrometheusMetricsCountingCommandBus implements CommandBus {
 
   private CommandBus decorated;
-  private final Counter counter;
+  private Counter counter;
 
   /**
    * Creates a new PrometheusMetricsCountingCommandBus
@@ -49,6 +49,7 @@ public class PrometheusMetricsCountingCommandBus implements CommandBus {
   /**
    * Delegates the provided command to the decorated command bus and increases the given counter using the command's
    * classname as a label
+   *
    * @param command command object
    * @param <R> type of return value
    * @param <C> type of command

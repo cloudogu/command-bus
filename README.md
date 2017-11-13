@@ -45,6 +45,21 @@ For further details and options refer to the [JitPack website](https://jitpack.i
 
 First example is the logging decorator ([`LoggingCommandBus`](src/main/java/de/triology/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
 
+### Prometheus metric decorators
+The Triology Command Bus provides two Prometheus metrics decorators. More information on Prometheus can be found on the
+project's [website](https://prometheus.io).
+In order to use them, make sure to provide the `io.prometheus:simpleclient` dependency on the classpath.
+
+#### PrometheusMetricsCountingCommandBus
+The `PrometheusMetricsCountingCommandBus` counts every executed command, using a Prometheus Counter. 
+The counter to be used must be provided as a constructor parameter. For each type of command (i.e. it's class name) a 
+label is created automatically.
+
+#### PrometheusMetricsTimingCommandBus
+The `PrometheusMetricsTimingCommandBus` captures the time a command's execution takes and provides the metric as a 
+Prometheus Histogram. Similarly to the `PrometheusMetricsCountingCommandBus`, the Histogram needs to be provided as a 
+constructor parameter.
+
 ## Return values
 
 * `Command`s can specify return values. See [`HelloCommand`](src/test/java/de/triology/cb/HelloCommand.java) and  [`HelloCommandHandler`](src/test/java/de/triology/cb/HelloCommandHandler.java) for example.

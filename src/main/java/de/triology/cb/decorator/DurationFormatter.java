@@ -24,6 +24,7 @@
 package de.triology.cb.decorator;
 
 import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import static java.util.concurrent.TimeUnit.*;
@@ -56,7 +57,7 @@ public final class DurationFormatter {
     TimeUnit targetUnit = chooseUnit(durationInNanoSeconds);
     double value = (double) durationInNanoSeconds / NANOSECONDS.convert(1, targetUnit);
 
-    NumberFormat formatter = NumberFormat.getInstance();
+    NumberFormat formatter = NumberFormat.getInstance(Locale.ENGLISH);
     return formatter.format(value) + abbreviate(targetUnit);
   }
 

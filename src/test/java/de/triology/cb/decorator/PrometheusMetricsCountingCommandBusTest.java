@@ -32,7 +32,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -52,7 +51,7 @@ public class PrometheusMetricsCountingCommandBusTest {
 
   @Before
   public void setUp() throws Exception {
-    when(counter.labels(HelloCommand.class.getName())).thenReturn(child);
+    when(counter.labels(HelloCommand.class.getSimpleName())).thenReturn(child);
     this.commandBus = new PrometheusMetricsCountingCommandBus(decorated, counter);
   }
 

@@ -30,7 +30,7 @@
 
   <groupId>de.triology.cb</groupId>
   <artifactId>command-bus</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1-SNAPSHOT</version>
   <url>https://github.com/triologygmbh/command-bus</url>
 
   <licenses>
@@ -63,7 +63,7 @@
     <connection>scm:git:https://github.com/triologygmbh/command-bus</connection>
     <developerConnection>scm:git:https://github.com/triologygmbh/command-bus</developerConnection>
     <url>https://github.com/triologygmbh/command-bus.git</url>
-    <tag>0.2.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <issueManagement>

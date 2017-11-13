@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@6cd41e0')
+@Library('github.com/cloudogu/ces-build-lib@b5f6848')
 import com.cloudogu.ces.cesbuildlib.*
 
 node {
@@ -48,5 +48,21 @@ node {
   // Find maven warnings and visualize in job
   warnings consoleParsers: [[parserName: 'Maven']]
 
-  mailIfStatusChanged(env.EMAIL_RECIPIENTS_COMMAND_BUS)
+  mailIfStatusChanged(getCommitAuthorOrDefaultEmailRecipients(env.EMAIL_RECIPIENTS_COMMAND_BUS))
+}
+
+String getCommitAuthorOrDefaultEmailRecipients(String defaultRecipients) {
+  def isStableBranch = env.BRANCH_NAME in ['master', 'develop']
+  String commitAuthorEmail =  new Git(this).commitAuthorEmail
+
+  if (commitAuthorEmail == null && commitAuthorEmail.isEmpty())
+    return defaultRecipients
+  if (isStableBranch) {
+    if (!defaultRecipients.contains(commitAuthorEmail)) {
+      defaultRecipients += ";$commitAuthorEmail"
+    }
+    return defaultRecipients
+  } else {
+    return commitAuthorEmail
+  }
 }

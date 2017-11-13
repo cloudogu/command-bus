@@ -27,16 +27,32 @@ import de.triology.cb.Command;
 import de.triology.cb.CommandBus;
 import io.prometheus.client.Histogram;
 
+/**
+ * Command bus decorator counting the executed commands using a Prometheus {@link Histogram}
+ */
 public class PrometheusMetricsTimingCommandBus implements CommandBus {
   private CommandBus decorated;
   private Histogram histogram;
 
 
+  /**
+   * Creates a new PrometheusMetricsCountingCommandBus
+   *
+   * @param decorated command bus to decorate
+   * @param histogram histogram to be used for timing
+   */
   public PrometheusMetricsTimingCommandBus(CommandBus decorated, Histogram histogram) {
     this.decorated = decorated;
     this.histogram = histogram;
   }
 
+  /**
+   * Delegates the provided command to the decorated command bus and times the command's execution using it's
+   * classname as a label
+   * @param command command object
+   * @param <R> type of return value
+   * @param <C> type of command
+   */
   @Override
   public <R, C extends Command<R>> R execute(C command) {
     Histogram.Timer commandTimer = histogram.labels(command.getClass().getSimpleName()).startTimer();

@@ -39,6 +39,15 @@ node {
     stage('Integration Test') {
       mvn "verify -DskipUnitTests"
     }
+
+    stage('Statical Code Analysis') {
+      withSonarQubeEnv('sonarcloud.io') {
+        mvn "$SONAR_MAVEN_GOAL -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_AUTH_TOKEN $SONAR_EXTRA_PROPS " +
+          //exclude generated code in target folder
+          "-Dsonar.exclusions=target/**"
+        // TODO check quality gate
+      }
+    }
   }
 
   // Archive Unit and integration test results, if any

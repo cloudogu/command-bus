@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@b5f6848')
+@Library('github.com/cloudogu/ces-build-lib@e59ce46')
 import com.cloudogu.ces.cesbuildlib.*
 
 node {
@@ -19,6 +19,7 @@ node {
     Maven mvn = new MavenLocal(this, mvnHome, javaHome)
     Git git = new Git(this)
 
+
     stage('Checkout') {
       checkout scm
       /* Don't remove folders starting in "." like
@@ -26,6 +27,8 @@ node {
        */
       git.clean('".*/"')
     }
+
+    initMaven(mvn, 'sonarqube-gh', git.gitHubRepositoryName)
 
     stage('Build') {
       mvn 'clean install -DskipTests'
@@ -60,9 +63,47 @@ node {
   mailIfStatusChanged(getCommitAuthorOrDefaultEmailRecipients(env.EMAIL_RECIPIENTS_COMMAND_BUS))
 }
 
+void initMaven(Maven mvn, String sonarGitHubCredentials, String gitHubrepoName) {
+
+  if ("master".equals(env.BRANCH_NAME)) {
+
+    echo "Building master branch"
+    mvn.additionalArgs = "-DperformRelease"
+    currentBuild.description = mvn.getVersion()
+
+  } else {
+
+    // CHANGE_ID == pull request id
+    // http://stackoverflow.com/questions/41695530/how-to-get-pull-request-id-from-jenkins-pipeline
+    if (env.CHANGE_ID != null && env.CHANGE_ID.length() > 0) {
+
+      echo "Building PR ${env.CHANGE_ID} at branch ${env.BRANCH_NAME}"
+
+      // See https://docs.sonarqube.org/display/PLUG/GitHub+Plugin
+      mvn.additionalArgs = "-Dsonar.analysis.mode=preview "
+      mvn.additionalArgs += "-Dsonar.github.pullRequest=${env.CHANGE_ID} "
+      mvn.additionalArgs += "-Dsonar.github.repository=$gitHubrepoName "
+      withCredentials([string(credentialsId: sonarGitHubCredentials, variable: 'PASSWORD')]) {
+        mvn.additionalArgs += "-Dsonar.github.oauth=${env.PASSWORD} "
+      }
+
+    } else {
+
+      echo "Building branch ${env.BRANCH_NAME}"
+
+      // Run SQ analysis in specific project for feature, hotfix, etc.
+      // Note that this is deprecated from SQ 6.6. Branch feature only in commercial editions. Workaround by adding ":${env.BRANCH_NAME} to all keys?
+      // https://docs.sonarqube.org/display/SONAR/Analysis+Parameters
+      // https://www.sonarsource.com/resources/product-news/news.html#6.7-lts-released
+      // https://www.sonarsource.com/plans-and-pricing/developer/
+      mvn.additionalArgs = "-Dsonar.branch=" + env.BRANCH_NAME
+    }
+  }
+}
+
 String getCommitAuthorOrDefaultEmailRecipients(String defaultRecipients) {
   def isStableBranch = env.BRANCH_NAME in ['master', 'develop']
-  String commitAuthorEmail =  new Git(this).commitAuthorEmail
+  String commitAuthorEmail = new Git(this).commitAuthorEmail
 
   if (commitAuthorEmail == null && commitAuthorEmail.isEmpty())
     return defaultRecipients

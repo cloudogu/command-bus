@@ -92,11 +92,9 @@ void initMaven(Maven mvn, String sonarGitHubCredentials, String gitHubrepoName) 
       echo "Building branch ${env.BRANCH_NAME}"
 
       // Run SQ analysis in specific project for feature, hotfix, etc.
-      // Note that this is deprecated from SQ 6.6. Branch feature only in commercial editions. Workaround by adding ":${env.BRANCH_NAME} to all keys?
-      // https://docs.sonarqube.org/display/SONAR/Analysis+Parameters
-      // https://www.sonarsource.com/resources/product-news/news.html#6.7-lts-released
-      // https://www.sonarsource.com/plans-and-pricing/developer/
-      mvn.additionalArgs = "-Dsonar.branch=" + env.BRANCH_NAME
+      // See https://docs.sonarqube.org/display/PLUG/Branch+Plugin
+      // Note that -Dsonar.branch is deprecated from SQ 6.6: https://docs.sonarqube.org/display/SONAR/Analysis+Parameters
+      mvn.additionalArgs = "-Dsonar.branch.name=$env.BRANCH_NAME -Dsonar.branch.target=master"
     }
   }
 }

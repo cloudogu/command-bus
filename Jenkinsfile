@@ -9,9 +9,9 @@ properties([
   disableConcurrentBuilds()
 ])
 
-catchError {
+node {
 
-  node {
+  catchError {
 
     def mvnHome = tool 'M3'
     def javaHome = tool 'JDK8'
@@ -49,26 +49,11 @@ catchError {
           //exclude generated code in target folder
           "-Dsonar.exclusions=target/**"
       }
+
+      waitForQualityGateAndSetBuildResult('UNSTABLE')
     }
   }
 
-  stage("Quality Gate") {
-    // Pull Requests are analyzed locally, so no calling of the QGate webhook
-    if (!isPullRequest()) {
-      timeout(time: 1, unit: 'HOURS') {
-        // This will only work if a webhook to <JenkinsInstance>/sonarqube-webhook/ is set up in SQ project
-        // See https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
-        def qgate = waitForQualityGate()
-        if (qgate.status != 'OK') {
-          echo "Quality Gate failure: ${qgate.status} --> Build UNSTABLE"
-          currentBuild.result = 'UNSTABLE'
-        }
-      }
-    }
-  }
-}
-
-node {
 // Archive Unit and integration test results, if any
   junit allowEmptyResults: true,
     testResults: '**/target/surefire-reports/TEST-*.xml, **/target/failsafe-reports/*.xml'
@@ -117,6 +102,31 @@ boolean isPullRequest() {
   // CHANGE_ID == pull request id
   // http://stackoverflow.com/questions/41695530/how-to-get-pull-request-id-from-jenkins-pipeline
   env.CHANGE_ID != null && env.CHANGE_ID.length() > 0
+}
+
+/**
+ * Blocks until a webhook is called on Jenkins that signalizes finished SonarQube QualityGate evaluation.
+ * If the Quality Gate fails the build status is set to {@code buildResultOnQualityGateFailure}.
+ *
+ * If there is no webhook or SonarQube does not respond within 2 minutes, the build fails.
+ * So make sure to set up a webhook in SonarQube global administration or per project to
+ * {@code <JenkinsInstance>/sonarqube-webhook/}.
+ * See https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
+ *
+ * If this build is a Pull Request, this does not wait, because usually PRs are analyzed locally.
+ * See https://docs.sonarqube.org/display/PLUG/GitHub+Plugin
+ */
+void waitForQualityGateAndSetBuildResult(String buildResultOnQualityGateFailure) {
+  // Pull Requests are analyzed locally, so no calling of the QGate webhook
+  if (!isPullRequest()) {
+    timeout(time: 2, unit: 'MINUTES') { // Needed when there is no webhook for example
+      def qGate = waitForQualityGate()
+      if (qGate.status != 'OK') {
+        echo "Quality Gate failure: ${qGate.status} --> Build $buildResultOnQualityGateFailure"
+        currentBuild.result = buildResultOnQualityGateFailure
+      }
+    }
+  }
 }
 
 String getCommitAuthorOrDefaultEmailRecipients(String defaultRecipients) {

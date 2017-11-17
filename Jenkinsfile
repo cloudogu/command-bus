@@ -48,7 +48,18 @@ node {
         mvn "$SONAR_MAVEN_GOAL -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_AUTH_TOKEN $SONAR_EXTRA_PROPS " +
           //exclude generated code in target folder
           "-Dsonar.exclusions=target/**"
-        // TODO check quality gate
+
+        // Pull Requests are analyzed locally, so no calling of the QGate webhook
+        if (!isPullRequest()) {
+          timeout(time: 1, unit: 'HOURS') {
+            // This will only work if a webhook to <JenkinsInstance>/sonarqube-webhook/ is set up in SQ project
+            def qgate = waitForQualityGate()
+            if (qgate.status != 'OK') {
+              echo "Quality Gate failure: ${qgate.status} --> Build UNSTABLE"
+              currentBuild.result = 'UNSTABLE'
+            }
+          }
+        }
       }
     }
   }
@@ -73,9 +84,7 @@ void initMaven(Maven mvn, String sonarGitHubCredentials, String gitHubrepoName) 
 
   } else {
 
-    // CHANGE_ID == pull request id
-    // http://stackoverflow.com/questions/41695530/how-to-get-pull-request-id-from-jenkins-pipeline
-    if (env.CHANGE_ID != null && env.CHANGE_ID.length() > 0) {
+    if (isPullRequest()) {
 
       echo "Building PR ${env.CHANGE_ID} at branch ${env.BRANCH_NAME}"
 
@@ -97,6 +106,12 @@ void initMaven(Maven mvn, String sonarGitHubCredentials, String gitHubrepoName) 
       mvn.additionalArgs = "-Dsonar.branch.name=$env.BRANCH_NAME -Dsonar.branch.target=master"
     }
   }
+}
+
+boolean isPullRequest() {
+  // CHANGE_ID == pull request id
+  // http://stackoverflow.com/questions/41695530/how-to-get-pull-request-id-from-jenkins-pipeline
+  env.CHANGE_ID != null && env.CHANGE_ID.length() > 0
 }
 
 String getCommitAuthorOrDefaultEmailRecipients(String defaultRecipients) {

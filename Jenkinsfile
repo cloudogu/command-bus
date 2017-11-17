@@ -48,16 +48,17 @@ node {
         mvn "$SONAR_MAVEN_GOAL -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_AUTH_TOKEN $SONAR_EXTRA_PROPS " +
           //exclude generated code in target folder
           "-Dsonar.exclusions=target/**"
+      }
 
-        // Pull Requests are analyzed locally, so no calling of the QGate webhook
-        if (!isPullRequest()) {
-          timeout(time: 1, unit: 'HOURS') {
-            // This will only work if a webhook to <JenkinsInstance>/sonarqube-webhook/ is set up in SQ project
-            def qgate = waitForQualityGate()
-            if (qgate.status != 'OK') {
-              echo "Quality Gate failure: ${qgate.status} --> Build UNSTABLE"
-              currentBuild.result = 'UNSTABLE'
-            }
+      // Pull Requests are analyzed locally, so no calling of the QGate webhook
+      if (!isPullRequest()) {
+        timeout(time: 1, unit: 'HOURS') {
+          // This will only work if a webhook to <JenkinsInstance>/sonarqube-webhook/ is set up in SQ project
+          // See https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
+          def qgate = waitForQualityGate()
+          if (qgate.status != 'OK') {
+            echo "Quality Gate failure: ${qgate.status} --> Build UNSTABLE"
+            currentBuild.result = 'UNSTABLE'
           }
         }
       }

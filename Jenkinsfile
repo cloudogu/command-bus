@@ -2,16 +2,16 @@
 @Library('github.com/cloudogu/ces-build-lib@e59ce46')
 import com.cloudogu.ces.cesbuildlib.*
 
-node {
+properties([
+  // Keep only the most recent builds in order to preserve space
+  buildDiscarder(logRotator(numToKeepStr: '20')),
+  // Don't run concurrent builds for a branch, because they use the same workspace directory
+  disableConcurrentBuilds()
+])
 
-  properties([
-    // Keep only the most recent builds in order to preserve space
-    buildDiscarder(logRotator(numToKeepStr: '20')),
-    // Don't run concurrent builds for a branch, because they use the same workspace directory
-    disableConcurrentBuilds()
-  ])
+catchError {
 
-  catchError {
+  node {
 
     def mvnHome = tool 'M3'
     def javaHome = tool 'JDK8'
@@ -23,8 +23,8 @@ node {
     stage('Checkout') {
       checkout scm
       /* Don't remove folders starting in "." like
-       * .m2 (maven), .npm, .cache, .local (bower)
-       */
+     * .m2 (maven), .npm, .cache, .local (bower)
+     */
       git.clean('".*/"')
     }
 
@@ -49,27 +49,31 @@ node {
           //exclude generated code in target folder
           "-Dsonar.exclusions=target/**"
       }
+    }
+  }
 
-      // Pull Requests are analyzed locally, so no calling of the QGate webhook
-      if (!isPullRequest()) {
-        timeout(time: 1, unit: 'HOURS') {
-          // This will only work if a webhook to <JenkinsInstance>/sonarqube-webhook/ is set up in SQ project
-          // See https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
-          def qgate = waitForQualityGate()
-          if (qgate.status != 'OK') {
-            echo "Quality Gate failure: ${qgate.status} --> Build UNSTABLE"
-            currentBuild.result = 'UNSTABLE'
-          }
+  stage("Quality Gate") {
+    // Pull Requests are analyzed locally, so no calling of the QGate webhook
+    if (!isPullRequest()) {
+      timeout(time: 1, unit: 'HOURS') {
+        // This will only work if a webhook to <JenkinsInstance>/sonarqube-webhook/ is set up in SQ project
+        // See https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
+        def qgate = waitForQualityGate()
+        if (qgate.status != 'OK') {
+          echo "Quality Gate failure: ${qgate.status} --> Build UNSTABLE"
+          currentBuild.result = 'UNSTABLE'
         }
       }
     }
   }
+}
 
-  // Archive Unit and integration test results, if any
+node {
+// Archive Unit and integration test results, if any
   junit allowEmptyResults: true,
     testResults: '**/target/surefire-reports/TEST-*.xml, **/target/failsafe-reports/*.xml'
 
-  // Find maven warnings and visualize in job
+// Find maven warnings and visualize in job
   warnings consoleParsers: [[parserName: 'Maven']]
 
   mailIfStatusChanged(getCommitAuthorOrDefaultEmailRecipients(env.EMAIL_RECIPIENTS_COMMAND_BUS))

@@ -30,6 +30,8 @@
 
   <groupId>de.triology.cb</groupId>
   <artifactId>command-bus</artifactId>
+  <name>command-bus</name>
+  <description>CDI enabled Java Command-Bus</description>
   <version>0.2.1-SNAPSHOT</version>
   <url>https://github.com/triologygmbh/command-bus</url>
 
@@ -70,6 +72,17 @@
     <system>GitHub</system>
     <url>https://github.com/triologygmbh/command-bus/issues</url>
   </issueManagement>
+
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
   <dependencies>
 
@@ -196,6 +209,8 @@
         <configuration>
           <!-- Make our tags look like e.g. "1.0.1" -->
           <tagNameFormat>@{project.version}</tagNameFormat>
+          <!-- During release:perform, enable the "release" profile -->
+          <releaseProfiles>release</releaseProfiles>
         </configuration>
       </plugin>
 
@@ -203,10 +218,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-deploy-plugin</artifactId>
         <version>2.8.2</version>
-        <configuration>
-          <!-- Deploy to local directory only for now -->
-          <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/release</altDeploymentRepository>
-        </configuration>
       </plugin>
 
       <plugin>
@@ -217,20 +228,6 @@
            Property value seems to magically default to false -->
           <skipTests>${skipUnitTests}</skipTests>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.1</version>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
       </plugin>
 
       <plugin>
@@ -321,6 +318,69 @@
                 <id>agent-for-it</id>
                 <goals>
                   <goal>prepare-agent-integration</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>3.0.1</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.10.4</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.sonatype.plugins</groupId>
+            <artifactId>nexus-staging-maven-plugin</artifactId>
+            <version>1.6.8</version>
+            <extensions>true</extensions>
+            <configuration>
+              <serverId>ossrh</serverId>
+              <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+              <autoReleaseAfterClose>true</autoReleaseAfterClose>
+            </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.6</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
                 </goals>
               </execution>
             </executions>

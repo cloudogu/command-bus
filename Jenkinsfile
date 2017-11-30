@@ -137,7 +137,7 @@ String getCommitAuthorOrDefaultEmailRecipients(String defaultRecipients) {
     return defaultRecipients
   if (isStableBranch) {
     if (!defaultRecipients.contains(commitAuthorEmail)) {
-      defaultRecipients += ";$commitAuthorEmail"
+      defaultRecipients += ",$commitAuthorEmail"
     }
     return defaultRecipients
   } else {

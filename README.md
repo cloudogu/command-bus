@@ -3,7 +3,6 @@
 [![Quality Gates](https://sonarcloud.io/api/badges/gate?key=de.triology.cb%3Acommand-bus)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
 [![Coverage](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus&metric=coverage)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
 [![Technical Debt](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
-[![JitPack](https://jitpack.io/v/triologygmbh/command-bus.svg)](https://jitpack.io/#triologygmbh/command-bus)
 
 CDI enabled Java Command-Bus
 
@@ -16,27 +15,21 @@ CDI enabled Java Command-Bus
 
 ## Usage (CDI)
 
-You can use JitPack to configure command-bus as a dependency in your project.<br/>
-For example when using maven, define the JitPack repository:
+Add the [lastest stable version of command-bus](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus%22) to the dependency management tool of your choice.
 
-```XML
-<repositories>
-    <repository>
-        <id>jitpack.io</id>
-        <url>https://jitpack.io</url>
-    </repository>
-</repositories>
-```
-And the command-bus dependency:
+E.g. for maven
 
 ```XML
 <dependency>
-    <groupId>com.github.triologygmbh</groupId>
+    <groupId>de.triology.cb</groupId>
     <artifactId>command-bus</artifactId>
-   <version>0.1.0</version>
+    <version>0.2.1</version>
 </dependency>
 ```
-For further details and options refer to the [JitPack website](https://jitpack.io/#triologygmbh/command-bus).
+[![Maven Central](https://img.shields.io/maven-central/v/de.triology.cb/command-bus.svg)](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus%22)
+
+You can get snapshot versions,via [JitPack](https://jitpack.io/#triologygmbh/command-bus).  
+[![JitPack](https://jitpack.io/v/triologygmbh/command-bus.svg)](https://jitpack.io/#triologygmbh/command-bus)
 
 * Having the command-bus dependency on the classpath triggers the CDI extension that finds all [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java)s and registeres them with the appropriate [`Command`](src/main/java/de/triology/cb/Command.java) in the [`Registry`](src/main/java/de/triology/cb/cdi/Registry.java).
 * Provide a Producer for the [`CommandBus`](src/main/java/de/triology/cb/CommandBus.java) that brings together [`Registry`](src/main/java/de/triology/cb/cdi/Registry.java) and [`CDICommandBus`](src/main/java/de/triology/cb/cdi/CDICommandBus.java).

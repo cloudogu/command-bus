@@ -60,3 +60,6 @@ constructor parameter.
 
 * `Command`s can specify return values. See [`HelloCommand`](src/test/java/de/triology/cb/HelloCommand.java) and  [`HelloCommandHandler`](src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
 * If you don't want a return value, use `Void`. See [`ByeCommand`](src/test/java/de/triology/cb/ByeCommand.java) and  [`ByeCommandHandler`](src/test/java/de/triology/cb/ByeCommandHandler.java) for example.
+
+
+Some Change

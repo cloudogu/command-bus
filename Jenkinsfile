@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@9789d0b')
+@Library('github.com/cloudogu/ces-build-lib@c43a1be')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -53,8 +53,18 @@ node {
     }
 
     stage('Deploy') {
-      if ((preconditionsForDeploymentFullfilled())) {
-        deployToMavenCentral(mvn)
+      if ((preconditionsForDeploymentFulfilled())) {
+        def repo = new Maven.Repository()
+        repo.id = 'ces'
+        repo.url = 'https://ecosystem.cloudogu.com'
+        repo.credentialsIdUsernameAndPassword = 'de.triology-mavenCentral-acccessToken'
+
+        def sigCreds = new Maven.SignatureCredentials()
+        sigCreds.publicKeyRingFile = 'de.triology-mavenCentral-publicKeyring-file'
+        sigCreds.secretKeyRingFile = 'de.triology-mavenCentral-secretKeyring-file'
+        sigCreds.secretKeyPassPhrase = 'de.triology-mavenCentral-secretKey-Passphrase'
+
+        mvn.deployToMavenCentral(sigCreds, repo)
       }
     }
   }
@@ -69,8 +79,9 @@ node {
   mailIfStatusChanged(getCommitAuthorOrDefaultEmailRecipients(env.EMAIL_RECIPIENTS_COMMAND_BUS))
 }
 
-boolean preconditionsForDeploymentFullfilled() {
-  if (currentBuild.currentResult == 'SUCCESS' && currentBuild.result == 'SUCCESS' && env.BRANCH_NAME == 'master') {
+boolean preconditionsForDeploymentFulfilled() {
+  if (currentBuild.currentResult == 'SUCCESS' && currentBuild.result == 'SUCCESS' &&
+        env.BRANCH_NAME == 'master' && !isPullRequest()) {
     return true
   } else {
     echo "Skipping deployment because of branch or build result: currentResult=${currentBuild.currentResult}, " +
@@ -102,39 +113,5 @@ String getCommitAuthorOrDefaultEmailRecipients(String defaultRecipients) {
     return defaultRecipients
   } else {
     return commitAuthorEmail
-  }
-}
-
-void writeSettingsXmlWithServer(def serverId, def serverUsername, def serverPassword) {
-  script.writeFile file: "${env.HOME}/.m2/settings.xml", text: """
-<settings>
-    <servers>
-        <server>
-          <id>$serverId</id>
-          <username>$serverUsername</username>
-          <password>$serverPassword</password>
-        </server>
-    </servers>
-</settings>"""
-}
-
-void deployToMavenCentral(Maven mvn) {
-  withCredentials([file(credentialsId: 'de.triology-mavenCentral-publicKeyring-file', variable: 'pubring'),
-                   file(credentialsId: 'de.triology-mavenCentral-secretKeyring-file', variable: 'secring'),
-                   string(credentialsId: 'de.triology-mavenCentral-secretKey-Passphrase', variable: 'passphrase'),
-                   usernamePassword(credentialsId: 'de.triology-mavenCentral-acccessToken',
-                     passwordVariable: 'password', usernameVariable: 'username')]) {
-
-    // The deploy plugin does not provide an option of passing server credentials via command line
-    // So, create settings.xml that contains custom properties that are can be set via command line (property
-    // interpolation) - https://stackoverflow.com/a/28074776/1845976
-    writeSettingsXmlWithServer('ossrh', '$ossrh.username', '$ossrh.password')
-
-    // TODO Is settings.xml picked up or do we need to use -s?
-    mvn "deploy -P release " +
-      // gpg params for signing jar
-      "-Dgpg.publicKeyring=$publicKeyring -Dgpg.secretKeyring=$privateKeyring -Dgpg.passphrase=$passphrase " +
-      // credentials for deploying to sonatype
-      "-Dossrh.username=$username -Dossrh.password=$password "
   }
 }

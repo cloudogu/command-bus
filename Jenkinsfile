@@ -29,6 +29,8 @@ node {
     withCredentials([usernamePassword(credentialsId: 'de.triology-mavenCentral-acccessToken',
       passwordVariable: 'password', usernameVariable: 'username')]) {
       echo "username=$username"
+       script.writeFile file: 'username.txt', text: username
+      echo "Wrote username to file"
     }
   }
 

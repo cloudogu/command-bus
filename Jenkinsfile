@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@888733b')
+@Library('github.com/cloudogu/ces-build-lib@9789d0b')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -26,9 +26,36 @@ node {
     }
 
     initMaven(mvn)
-    withCredentials([usernamePassword(credentialsId: 'de.triology-mavenCentral-acccessToken',
-      passwordVariable: 'password', usernameVariable: 'username')]) {
-      echo "username=$username"
+
+    stage('Build') {
+      mvn 'clean install -DskipTests'
+      archive '**/target/*.jar'
+    }
+
+    stage('Unit Test') {
+      mvn "test"
+    }
+
+    stage('Integration Test') {
+      mvn "verify -DskipUnitTests"
+    }
+
+    stage('Statical Code Analysis') {
+      def sonarQube = new SonarQube(this, 'sonarcloud.io')
+      sonarQube.updateAnalysisResultOfPullRequestsToGitHub('sonarqube-gh')
+      sonarQube.isUsingBranchPlugin = true
+
+      sonarQube.analyzeWith(mvn)
+
+      if (!sonarQube.waitForQualityGateWebhookToBeCalled()) {
+        currentBuild.result ='UNSTABLE'
+      }
+    }
+
+    stage('Deploy') {
+      if ((preconditionsForDeploymentFullfilled())) {
+        deployToMavenCentral(mvn)
+      }
     }
   }
 

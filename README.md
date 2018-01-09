@@ -28,7 +28,7 @@ E.g. for maven
 ```
 [![Maven Central](https://img.shields.io/maven-central/v/de.triology.cb/command-bus.svg)](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus%22)
 
-You can get snapshot versions,via [JitPack](https://jitpack.io/#triologygmbh/command-bus).  
+You can get snapshot versions from maven central (for the most recent commit on develop branch) or via [JitPack](https://jitpack.io/#triologygmbh/command-bus) (note that JitPack uses differen maven coordinates).  
 [![JitPack](https://jitpack.io/v/triologygmbh/command-bus.svg)](https://jitpack.io/#triologygmbh/command-bus)
 
 * Having the command-bus dependency on the classpath triggers the CDI extension that finds all [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java)s and registeres them with the appropriate [`Command`](src/main/java/de/triology/cb/Command.java) in the [`Registry`](src/main/java/de/triology/cb/cdi/Registry.java).

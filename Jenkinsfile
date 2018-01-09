@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@cbdf2e8')
+@Library('github.com/cloudogu/ces-build-lib@7e3090c')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -22,10 +22,7 @@ node {
 
     stage('Checkout') {
       checkout scm
-      /* Don't remove folders starting in "." like
-     * .m2 (maven), .npm, .cache, .local (bower)
-     */
-      git.clean('".*/"')
+      git.clean('')
     }
 
     initMaven(mvn)
@@ -63,7 +60,7 @@ node {
         mvn.setSignatureCredentials('de.triology-mavenCentral-secretKey-asc-file',
                                     'de.triology-mavenCentral-secretKey-Passphrase')
 
-        mvn.deployToNexusRepository(true)
+        mvn.deployToNexusRepositoryWithStaging()
       }
     }
   }
@@ -79,14 +76,23 @@ node {
 }
 
 boolean preconditionsForDeploymentFulfilled() {
-  if (currentBuild.currentResult == 'SUCCESS' && currentBuild.result == 'SUCCESS' &&
-        env.BRANCH_NAME == 'master' && !isPullRequest()) {
+  if (isBuildSuccessful() &&
+      !isPullRequest() &&
+      shouldBranchBeDeployed()) {
     return true
   } else {
     echo "Skipping deployment because of branch or build result: currentResult=${currentBuild.currentResult}, " +
       "result=${currentBuild.result}, branch=${env.BRANCH_NAME}."
     return false
   }
+}
+
+private boolean shouldBranchBeDeployed() {
+  return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop'
+}
+
+private boolean isBuildSuccessful() {
+  currentBuild.currentResult == 'SUCCESS' && currentBuild.result == 'SUCCESS'
 }
 
 void initMaven(Maven mvn) {

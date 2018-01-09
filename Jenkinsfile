@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@c43a1be')
+@Library('github.com/cloudogu/ces-build-lib@cbdf2e8')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -13,7 +13,10 @@ node {
 
   catchError {
 
-    Maven mvn = new MavenInDocker(this, "3.5.0-jdk-8")
+    def mvnHome = tool 'M3'
+    def javaHome = tool 'JDK8'
+
+    Maven mvn = new MavenLocal(this, mvnHome, javaHome)
     Git git = new Git(this)
 
 
@@ -53,18 +56,14 @@ node {
     }
 
     stage('Deploy') {
-      if ((preconditionsForDeploymentFulfilled())) {
-        def repo = new Maven.Repository()
-        repo.id = 'ces'
-        repo.url = 'https://ecosystem.cloudogu.com'
-        repo.credentialsIdUsernameAndPassword = 'de.triology-mavenCentral-acccessToken'
+      if (preconditionsForDeploymentFulfilled()) {
 
-        def sigCreds = new Maven.SignatureCredentials()
-        sigCreds.publicKeyRingFile = 'de.triology-mavenCentral-publicKeyring-file'
-        sigCreds.secretKeyRingFile = 'de.triology-mavenCentral-secretKeyring-file'
-        sigCreds.secretKeyPassPhrase = 'de.triology-mavenCentral-secretKey-Passphrase'
+        mvn.setDeploymentRepository('ossrh', 'https://oss.sonatype.org/', 'de.triology-mavenCentral-acccessToken')
 
-        mvn.deployToMavenCentral(sigCreds, repo)
+        mvn.setSignatureCredentials('de.triology-mavenCentral-secretKey-asc-file',
+                                    'de.triology-mavenCentral-secretKey-Passphrase')
+
+        mvn.deployToNexusRepository(true)
       }
     }
   }

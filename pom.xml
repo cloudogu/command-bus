@@ -32,7 +32,7 @@
   <artifactId>command-bus</artifactId>
   <name>command-bus</name>
   <description>CDI enabled Java Command-Bus</description>
-  <version>0.2.2</version>
+  <version>0.2.3-SNAPSHOT</version>
   <url>https://github.com/triologygmbh/command-bus</url>
 
   <licenses>

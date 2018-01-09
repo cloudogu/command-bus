@@ -92,7 +92,9 @@ private boolean shouldBranchBeDeployed() {
 }
 
 private boolean isBuildSuccessful() {
-  currentBuild.currentResult == 'SUCCESS' && currentBuild.result == 'SUCCESS'
+  currentBuild.currentResult == 'SUCCESS' &&
+    // Build result == SUCCESS seems not to set be during pipeline execution.
+    (currentBuild.result == null || currentBuild.result == 'SUCCESS')
 }
 
 void initMaven(Maven mvn) {

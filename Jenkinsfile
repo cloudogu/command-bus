@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@9789d0b')
+@Library('github.com/cloudogu/ces-build-lib@7e3090c')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -22,10 +22,7 @@ node {
 
     stage('Checkout') {
       checkout scm
-      /* Don't remove folders starting in "." like
-     * .m2 (maven), .npm, .cache, .local (bower)
-     */
-      git.clean('".*/"')
+      git.clean('')
     }
 
     initMaven(mvn)
@@ -54,16 +51,48 @@ node {
         currentBuild.result ='UNSTABLE'
       }
     }
+
+    stage('Deploy') {
+      if (preconditionsForDeploymentFulfilled()) {
+
+        mvn.setDeploymentRepository('ossrh', 'https://oss.sonatype.org/', 'de.triology-mavenCentral-acccessToken')
+
+        mvn.setSignatureCredentials('de.triology-mavenCentral-secretKey-asc-file',
+                                    'de.triology-mavenCentral-secretKey-Passphrase')
+
+        mvn.deployToNexusRepositoryWithStaging()
+      }
+    }
   }
 
-// Archive Unit and integration test results, if any
+  // Archive Unit and integration test results, if any
   junit allowEmptyResults: true,
     testResults: '**/target/surefire-reports/TEST-*.xml, **/target/failsafe-reports/*.xml'
 
-// Find maven warnings and visualize in job
+  // Find maven warnings and visualize in job
   warnings consoleParsers: [[parserName: 'Maven']]
 
   mailIfStatusChanged(getCommitAuthorOrDefaultEmailRecipients(env.EMAIL_RECIPIENTS_COMMAND_BUS))
+}
+
+boolean preconditionsForDeploymentFulfilled() {
+  if (isBuildSuccessful() &&
+      !isPullRequest() &&
+      shouldBranchBeDeployed()) {
+    return true
+  } else {
+    echo "Skipping deployment because of branch or build result: currentResult=${currentBuild.currentResult}, " +
+      "result=${currentBuild.result}, branch=${env.BRANCH_NAME}."
+    return false
+  }
+}
+
+private boolean shouldBranchBeDeployed() {
+  return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop'
+}
+
+private boolean isBuildSuccessful() {
+  currentBuild.currentResult == 'SUCCESS' && currentBuild.result == 'SUCCESS'
 }
 
 void initMaven(Maven mvn) {

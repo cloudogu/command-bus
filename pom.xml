@@ -59,6 +59,22 @@
       <timezone>Europe/Berlin</timezone>
     </developer>
 
+    <developer>
+        <name>Philipp Czora</name>
+        <email>philipp.czora@triology.de</email>
+        <organization>TRIOLOGY GmbH</organization>
+        <organizationUrl>https://www.triology.de/</organizationUrl>
+        <timezone>Europe/Berlin</timezone>
+    </developer>
+
+    <developer>
+        <name>Johannes Schnatterer</name>
+        <email>johannes.schnatterer@triology.de</email>
+        <organization>TRIOLOGY GmbH</organization>
+        <organizationUrl>https://www.triology.de/</organizationUrl>
+        <timezone>Europe/Berlin</timezone>
+    </developer>
+    
   </developers>
 
   <scm>

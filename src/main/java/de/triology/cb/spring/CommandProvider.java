@@ -21,21 +21,31 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.triology.cb;
+package de.triology.cb.spring;
 
-import javax.inject.Inject;
+import de.triology.cb.CommandHandler;
+import org.springframework.context.ApplicationContext;
 
-public class HelloCommandHandler implements CommandHandler<String, HelloCommand> {
+import javax.inject.Provider;
 
-  @Inject
-  private MessageCollector messageCollector;
+/**
+ * CommandProvider creates a handler with enabled spring injection.
+ *
+ * @param <H> type of handler
+ */
+@SuppressWarnings("unchecked")
+class CommandProvider<H extends CommandHandler<?, ?>> implements Provider<H> {
+
+  private final ApplicationContext applicationContext;
+  private final Class<H> type;
+
+  CommandProvider(ApplicationContext applicationContext, Class<H> type) {
+    this.applicationContext = applicationContext;
+    this.type = type;
+  }
 
   @Override
-  public String handle(HelloCommand command) {
-    String message = "hello " + command.getName();
-    if (messageCollector != null) {
-      messageCollector.add(message);
-    }
-    return message;
+  public H get() {
+    return applicationContext.getBean(type);
   }
 }

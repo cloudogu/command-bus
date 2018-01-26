@@ -21,21 +21,39 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.triology.cb;
+package de.triology.cb.spring;
 
-import javax.inject.Inject;
+import de.triology.cb.CommandHandler;
+import de.triology.cb.HelloCommand;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 
-public class HelloCommandHandler implements CommandHandler<String, HelloCommand> {
+import static org.mockito.Mockito.*;
 
-  @Inject
-  private MessageCollector messageCollector;
+@RunWith(MockitoJUnitRunner.class)
+public class SpringCommandBusTest {
 
-  @Override
-  public String handle(HelloCommand command) {
-    String message = "hello " + command.getName();
-    if (messageCollector != null) {
-      messageCollector.add(message);
-    }
-    return message;
+  @Mock
+  private Registry registry;
+
+  @Mock
+  private CommandHandler<String, HelloCommand> handler;
+
+  @InjectMocks
+  private SpringCommandBus commandBus;
+
+  @Test
+  public void execute() {
+    when(registry.get(HelloCommand.class)).thenReturn(handler);
+
+    HelloCommand command = new HelloCommand("bob");
+    commandBus.execute(command);
+
+    verify(handler).handle(command);
   }
+
+
 }

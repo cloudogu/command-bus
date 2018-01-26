@@ -21,21 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.triology.cb;
+package de.triology.cb.spring;
 
-import javax.inject.Inject;
+import de.triology.cb.ByeCommandHandler;
+import de.triology.cb.HelloCommand;
+import de.triology.cb.HelloCommandHandler;
+import de.triology.cb.MessageCollector;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-public class HelloCommandHandler implements CommandHandler<String, HelloCommand> {
+import static org.junit.Assert.assertEquals;
 
-  @Inject
-  private MessageCollector messageCollector;
+@ContextConfiguration(classes = {
+  HelloCommandHandler.class,
+  ByeCommandHandler.class,
+  MessageCollector.class,
+  Registry.class
+})
+@RunWith(SpringJUnit4ClassRunner.class)
+public class SpringITCase {
 
-  @Override
-  public String handle(HelloCommand command) {
-    String message = "hello " + command.getName();
-    if (messageCollector != null) {
-      messageCollector.add(message);
-    }
-    return message;
+  @Autowired
+  private Registry registry;
+
+  @Test
+  public void execute() {
+    SpringCommandBus commandBus = new SpringCommandBus(registry);
+    String result = commandBus.execute(new HelloCommand("bob"));
+    assertEquals("hello bob", result);
   }
+
 }

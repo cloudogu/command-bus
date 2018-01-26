@@ -21,21 +21,35 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package de.triology.cb;
+
+package de.triology.cb.spring;
+
+import de.triology.cb.Command;
+import de.triology.cb.CommandBus;
+import de.triology.cb.CommandHandler;
 
 import javax.inject.Inject;
 
-public class HelloCommandHandler implements CommandHandler<String, HelloCommand> {
+/**
+ * Spring backed Command-Bus.
+ */
+public class SpringCommandBus implements CommandBus {
 
+  private final Registry registry;
+
+  /**
+   * Creates a new instance with the given registry.
+   *
+   * @param registry registry
+   */
   @Inject
-  private MessageCollector messageCollector;
+  public SpringCommandBus(Registry registry) {
+    this.registry = registry;
+  }
 
   @Override
-  public String handle(HelloCommand command) {
-    String message = "hello " + command.getName();
-    if (messageCollector != null) {
-      messageCollector.add(message);
-    }
-    return message;
+  public <R, C extends Command<R>> R execute(C command) {
+    CommandHandler<R, C> commandHandler = (CommandHandler<R, C>) registry.get(command.getClass());
+    return commandHandler.handle(command);
   }
 }

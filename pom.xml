@@ -30,9 +30,15 @@
 
   <groupId>de.triology.cb</groupId>
   <artifactId>command-bus</artifactId>
+  <packaging>pom</packaging>
   <name>command-bus</name>
   <description>CDI enabled Java Command-Bus</description>
-  <version>0.2.3-SNAPSHOT</version>
+  <modules>
+    <module>command-bus-core</module>
+    <module>command-bus-spring</module>
+    <module>command-bus-cdi</module>
+  </modules>
+  <version>1.0</version>
   <url>https://github.com/triologygmbh/command-bus</url>
 
   <licenses>

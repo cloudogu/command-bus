@@ -8,9 +8,9 @@ CDI enabled Java Command-Bus
 
 ## Concepts
 
-* [`Command`](src/main/java/de/triology/cb/Command.java) - Marker Interface
-* [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java) - One Implementation per `Command`. Provides `handle(CommandImplementation)` Method.
-* [`CommandBus`](src/main/java/de/triology/cb/CommandBus.java) - Finds and calls the `CommandHandler` for each `Command`.
+* [`Command`](command-bus-core/src/main/java/de/triology/cb/Command.java) - Marker Interface
+* [`CommandHandler`](command-bus-core/src/main/java/de/triology/cb/CommandHandler.java) - One Implementation per `Command`. Provides `handle(CommandImplementation)` Method.
+* [`CommandBus`](command-bus-core/src/main/java/de/triology/cb/CommandBus.java) - Finds and calls the `CommandHandler` for each `Command`.
 * `CommandBus` can be decorated, in order to implement cross-cutting concerns, such as logging, transaction handling, validation, autorization, metrics etc.
 
 ## Usage (CDI)
@@ -22,8 +22,8 @@ E.g. for maven
 ```XML
 <dependency>
     <groupId>de.triology.cb</groupId>
-    <artifactId>command-bus</artifactId>
-    <version>0.2.1</version>
+    <artifactId>command-bus-cdi</artifactId>
+    <version>1.0</version>
 </dependency>
 ```
 [![Maven Central](https://img.shields.io/maven-central/v/de.triology.cb/command-bus.svg)](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus%22)
@@ -31,15 +31,15 @@ E.g. for maven
 You can get snapshot versions from maven central (for the most recent commit on develop branch) or via [JitPack](https://jitpack.io/#triologygmbh/command-bus) (note that JitPack uses different maven coordinates).  
 [![JitPack](https://jitpack.io/v/triologygmbh/command-bus.svg)](https://jitpack.io/#triologygmbh/command-bus)
 
-* Having the command-bus dependency on the classpath triggers the CDI extension that finds all [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java)s and registeres them with the appropriate [`Command`](src/main/java/de/triology/cb/Command.java) in the [`Registry`](src/main/java/de/triology/cb/cdi/Registry.java).
-* Provide a Producer for the [`CommandBus`](src/main/java/de/triology/cb/CommandBus.java) that brings together [`Registry`](src/main/java/de/triology/cb/cdi/Registry.java) and [`CDICommandBus`](src/main/java/de/triology/cb/cdi/CDICommandBus.java).
+* Having the command-bus dependency on the classpath triggers the CDI extension that finds all [`CommandHandler`](command-bus-core/src/main/java/de/triology/cb/CommandHandler.java)s and registeres them with the appropriate [`Command`](command-bus-core/src/main/java/de/triology/cb/Command.java) in the [`Registry`](command-bus-cdi/src/main/java/de/triology/cb/cdi/Registry.java).
+* Provide a Producer for the [`CommandBus`](command-bus-core/src/main/java/de/triology/cb/CommandBus.java) that brings together [`Registry`](command-bus-cdi/src/main/java/de/triology/cb/cdi/Registry.java) and [`CDICommandBus`](command-bus-cdi/src/main/java/de/triology/cb/cdi/CDICommandBus.java).
   This producer is the central place where decorators can be instantiated.
-  See [`CommandBusFactory`](src/test/java/de/triology/cb/cdi/CommandBusFactory.java) in tests, for example.
-* Implement your [`Command`](src/main/java/de/triology/cb/Command.java)s and [`CommandHandler`](src/main/java/de/triology/cb/CommandHandler.java)s. See [`CDIITCase`](src/test/java/de/triology/cb/cdi/CDIITCase.java).
+  See [`CommandBusFactory`](command-bus-cdi/src/test/java/de/triology/cb/cdi/CommandBusFactory.java) in tests, for example.
+* Implement your [`Command`](command-bus-core/src/main/java/de/triology/cb/Command.java)s and [`CommandHandler`](command-bus-core/src/main/java/de/triology/cb/CommandHandler.java)s. See [`CDIITCase`](command-bus-cdi/src/test/java/de/triology/cb/cdi/CDIITCase.java).
   
 ## Command Bus Decorators
 
-First example is the logging decorator ([`LoggingCommandBus`](src/main/java/de/triology/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
+First example is the logging decorator ([`LoggingCommandBus`](command-bus-core/src/main/java/de/triology/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
 
 ### Prometheus metric decorators
 The Triology Command Bus provides two Prometheus metrics decorators. More information on Prometheus can be found on the
@@ -58,5 +58,5 @@ constructor parameter.
 
 ## Return values
 
-* `Command`s can specify return values. See [`HelloCommand`](src/test/java/de/triology/cb/HelloCommand.java) and  [`HelloCommandHandler`](src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
-* If you don't want a return value, use `Void`. See [`ByeCommand`](src/test/java/de/triology/cb/ByeCommand.java) and  [`ByeCommandHandler`](src/test/java/de/triology/cb/ByeCommandHandler.java) for example.
+* `Command`s can specify return values. See [`HelloCommand`](command-bus-core/src/test/java/de/triology/cb/HelloCommand.java) and  [`de.triology.cb.HelloCommandHandler`](command-bus-core/src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
+* If you don't want a return value, use `Void`. See [`ByeCommand`](command-bus-core/src/test/java/de/triology/cb/ByeCommand.java) and  [`ByeCommandHandler`](command-bus-core/src/test/java/de/triology/cb/ByeCommandHandler.java) for example.

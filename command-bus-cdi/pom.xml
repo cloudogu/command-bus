@@ -30,7 +30,7 @@
   <parent>
     <artifactId>command-bus</artifactId>
     <groupId>de.triology.cb</groupId>
-    <version>1.0</version>
+    <version>0.2.3-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
@@ -39,7 +39,7 @@
     <dependency>
       <groupId>de.triology.cb</groupId>
       <artifactId>command-bus-core</artifactId>
-      <version>1.0</version>
+      <version>0.2.3-SNAPSHOT</version>
     </dependency>
   </dependencies>
 

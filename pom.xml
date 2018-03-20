@@ -38,7 +38,7 @@
     <module>command-bus-spring</module>
     <module>command-bus-cdi</module>
   </modules>
-  <version>1.0</version>
+  <version>0.2.3-SNAPSHOT</version>
   <url>https://github.com/triologygmbh/command-bus</url>
 
   <licenses>

@@ -4,7 +4,7 @@
 [![Coverage](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus&metric=coverage)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
 [![Technical Debt](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
 
-CDI enabled Java Command-Bus
+CDI/Spring enabled Java Command-Bus
 
 ## Concepts
 
@@ -15,7 +15,7 @@ CDI enabled Java Command-Bus
 
 ## Usage (CDI)
 
-Add the [latest stable version of command-bus](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus%22) to the dependency management tool of your choice.
+Add the [latest stable version of command-bus-cdi](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus-cdi%22) to the dependency management tool of your choice.
 
 E.g. for maven
 
@@ -26,6 +26,19 @@ E.g. for maven
     <version>1.0</version>
 </dependency>
 ```
+
+## Usage (Spring)
+
+Analogously to CDI:
+
+``` XML
+<dependency>
+	<groupId>de.triology.cb</groupId>
+	<artifactId>command-bus-spring</artifactId>
+	<version>1.0</version>
+</dependency>
+```
+
 [![Maven Central](https://img.shields.io/maven-central/v/de.triology.cb/command-bus.svg)](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus%22)
 
 You can get snapshot versions from maven central (for the most recent commit on develop branch) or via [JitPack](https://jitpack.io/#triologygmbh/command-bus) (note that JitPack uses different maven coordinates).  

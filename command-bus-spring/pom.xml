@@ -35,6 +35,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>command-bus-spring</artifactId>
+  <version>0.2.3-SNAPSHOT</version>
+
   <dependencies>
     <dependency>
       <groupId>de.triology.cb</groupId>

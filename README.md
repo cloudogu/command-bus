@@ -17,6 +17,15 @@ CDI/Spring enabled Java Command-Bus
 
 Add the [latest stable version of command-bus](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus-cdi%22) to the dependency management tool of your choice.
 You can also get snapshot versions from our [snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/de/triology/cb/command-bus/) (for the most recent commit on develop branch).
+To do so, add the following repo to your `pom.xml` or `settings.xml`:
+```xml
+<repository>
+    <id>snapshots-repo</id>
+    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+    <releases><enabled>false</enabled></releases>
+    <snapshots><enabled>true</enabled></snapshots>
+</repository>
+```
 
 There are different versions of command-bus for either CDI or spring.
 

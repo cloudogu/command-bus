@@ -25,7 +25,7 @@ package de.triology.cb.decorator;
 
 import com.thekua.spikes.LogbackCapturingAppender;
 import de.triology.cb.CommandBus;
-import de.triology.cb.HelloCommand;
+import de.triology.cb.EchoCommand;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -59,13 +59,13 @@ public class LoggingCommandBusTest {
   public void execute() {
     LogbackCapturingAppender capturing = LogbackCapturingAppender.weaveInto(LoggingCommandBus.LOG);
 
-    HelloCommand hello = new HelloCommand("joe");
-    loggingCommandBus.execute(hello);
-    verify(decorated).execute(hello);
+    EchoCommand echoCommand = new EchoCommand("joe");
+    loggingCommandBus.execute(echoCommand);
+    verify(decorated).execute(echoCommand);
 
     List<String> messages = capturing.getCapturedLogMessages();
-    assertThat(messages.get(0)).contains("start").contains("HelloCommand");
-    assertThat(messages.get(1)).contains("finish").contains("HelloCommand");
+    assertThat(messages.get(0)).contains("start").contains("EchoCommand");
+    assertThat(messages.get(1)).contains("finish").contains("EchoCommand");
   }
 
 }

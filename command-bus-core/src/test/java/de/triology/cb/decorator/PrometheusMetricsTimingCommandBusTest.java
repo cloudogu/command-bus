@@ -24,7 +24,7 @@
 package de.triology.cb.decorator;
 
 import de.triology.cb.CommandBus;
-import de.triology.cb.HelloCommand;
+import de.triology.cb.EchoCommand;
 import io.prometheus.client.Histogram;
 import org.junit.Before;
 import org.junit.Test;
@@ -53,17 +53,17 @@ public class PrometheusMetricsTimingCommandBusTest {
 
   @Before
   public void setUp() throws Exception {
-    when(histogram.labels(HelloCommand.class.getSimpleName())).thenReturn(child);
+    when(histogram.labels(EchoCommand.class.getSimpleName())).thenReturn(child);
     when(child.startTimer()).thenReturn(timer);
     commandBus = new PrometheusMetricsTimingCommandBus(decorated, histogram);
   }
 
   @Test
   public void execute() throws Exception {
-    HelloCommand helloCommand = new HelloCommand("July");
-    commandBus.execute(helloCommand);
-    verify(histogram).labels(HelloCommand.class.getSimpleName());
-    verify(decorated).execute(helloCommand);
+    EchoCommand echoCommand = new EchoCommand("July");
+    commandBus.execute(echoCommand);
+    verify(histogram).labels(EchoCommand.class.getSimpleName());
+    verify(decorated).execute(echoCommand);
     verify(timer).observeDuration();
   }
 

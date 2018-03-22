@@ -24,13 +24,10 @@
 package de.triology.cb;
 
 
-public class ByeCommandHandler implements CommandHandler<Void, ByeCommand> {
-
-  private MessageCollector messageCollector;
+public class EchoCommandHandler implements CommandHandler<String, EchoCommand> {
 
   @Override
-  public Void handle(ByeCommand command) {
-    messageCollector.add("bye " + command.getName());
-    return null;
+  public String handle(EchoCommand command) {
+    return command.getEcho();
   }
 }

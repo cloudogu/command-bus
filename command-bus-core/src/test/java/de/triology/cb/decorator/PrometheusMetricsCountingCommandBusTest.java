@@ -24,7 +24,7 @@
 package de.triology.cb.decorator;
 
 import de.triology.cb.CommandBus;
-import de.triology.cb.HelloCommand;
+import de.triology.cb.EchoCommand;
 import io.prometheus.client.Counter;
 import org.junit.Before;
 import org.junit.Test;
@@ -51,13 +51,13 @@ public class PrometheusMetricsCountingCommandBusTest {
 
   @Before
   public void setUp() throws Exception {
-    when(counter.labels(HelloCommand.class.getSimpleName())).thenReturn(child);
+    when(counter.labels(EchoCommand.class.getSimpleName())).thenReturn(child);
     this.commandBus = new PrometheusMetricsCountingCommandBus(decorated, counter);
   }
 
   @Test
   public void execute() throws Exception {
-    HelloCommand hello = new HelloCommand("joe");
+    EchoCommand hello = new EchoCommand("joe");
     commandBus.execute(hello);
     verify(decorated).execute(hello);
     verify(counter).labels(hello.getClass().getSimpleName());

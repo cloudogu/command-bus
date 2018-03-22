@@ -23,15 +23,15 @@
  */
 package de.triology.cb;
 
-public class HelloCommand implements Command<String> {
+public class EchoCommand implements Command<String> {
 
-  private final String name;
+  private final String echo;
 
-  public HelloCommand(String name) {
-    this.name = name;
+  public EchoCommand(String echo) {
+    this.echo = echo;
   }
 
-  public String getName() {
-    return name;
+  public String getEcho() {
+    return echo;
   }
 }

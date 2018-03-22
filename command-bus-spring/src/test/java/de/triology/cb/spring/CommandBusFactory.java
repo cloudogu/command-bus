@@ -23,47 +23,24 @@
  */
 package de.triology.cb.spring;
 
-import de.triology.cb.ByeCommand;
-import de.triology.cb.ByeCommandHandler;
 import de.triology.cb.CommandBus;
-import de.triology.cb.HelloCommand;
-import de.triology.cb.HelloCommandHandler;
-import de.triology.cb.MessageCollector;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import de.triology.cb.decorator.LoggingCommandBus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.context.annotation.Bean;
 
-import static org.assertj.core.api.Assertions.assertThat;
+public class CommandBusFactory {
 
-@ContextConfiguration(classes = {
-  HelloCommandHandler.class,
-  ByeCommandHandler.class,
-  MessageCollector.class,
-  Registry.class,
-  CommandBusFactory.class
-})
-@RunWith(SpringJUnit4ClassRunner.class)
-public class SpringITCase {
+  private Registry registry;
 
   @Autowired
-  private CommandBus commandBus;
-
-
-  @Autowired
-  private MessageCollector messageCollector;
-
-  @Test
-  public void execute() {
-    String actualStringReturnValue = commandBus.execute(new HelloCommand("hans"));
-    Void actualVoidReturnValue = commandBus.execute(new ByeCommand("hans"));
-
-    Assertions.assertThat(messageCollector.getMessages()).contains("hello hans", "bye hans");
-
-    assertThat(actualStringReturnValue).isEqualTo("hello hans");
-    assertThat(actualVoidReturnValue).isNull();
+  public CommandBusFactory(Registry registry) {
+    this.registry = registry;
   }
 
+  @Bean
+  public CommandBus create() {
+    return new LoggingCommandBus(
+      new SpringCommandBus(registry)
+    );
+  }
 }

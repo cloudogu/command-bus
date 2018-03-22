@@ -37,12 +37,41 @@
   <artifactId>command-bus-spring</artifactId>
   <version>0.2.3-SNAPSHOT</version>
 
+  <dependencyManagement>
+
+    <dependencies>
+
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-framework-bom</artifactId>
+        <version>4.3.14.RELEASE</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+    </dependencies>
+
+  </dependencyManagement>
+
   <dependencies>
+
     <dependency>
-      <groupId>de.triology.cb</groupId>
+      <groupId>${project.groupId}</groupId>
       <artifactId>command-bus-core</artifactId>
-      <version>0.2.3-SNAPSHOT</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
 

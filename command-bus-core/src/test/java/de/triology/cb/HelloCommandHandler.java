@@ -23,11 +23,9 @@
  */
 package de.triology.cb;
 
-import javax.inject.Inject;
 
 public class HelloCommandHandler implements CommandHandler<String, HelloCommand> {
 
-  @Inject
   private MessageCollector messageCollector;
 
   @Override

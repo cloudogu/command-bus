@@ -23,11 +23,9 @@
  */
 package de.triology.cb;
 
-import javax.inject.Inject;
 
 public class ByeCommandHandler implements CommandHandler<Void, ByeCommand> {
 
-  @Inject
   private MessageCollector messageCollector;
 
   @Override

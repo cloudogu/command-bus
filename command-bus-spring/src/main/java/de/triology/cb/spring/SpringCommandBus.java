@@ -28,8 +28,6 @@ import de.triology.cb.Command;
 import de.triology.cb.CommandBus;
 import de.triology.cb.CommandHandler;
 
-import javax.inject.Inject;
-
 /**
  * Spring backed Command-Bus.
  */
@@ -42,7 +40,6 @@ public class SpringCommandBus implements CommandBus {
    *
    * @param registry registry
    */
-  @Inject
   public SpringCommandBus(Registry registry) {
     this.registry = registry;
   }

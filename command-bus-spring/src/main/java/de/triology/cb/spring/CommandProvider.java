@@ -26,15 +26,13 @@ package de.triology.cb.spring;
 import de.triology.cb.CommandHandler;
 import org.springframework.context.ApplicationContext;
 
-import javax.inject.Provider;
-
 /**
  * CommandProvider creates a handler with enabled spring injection.
  *
  * @param <H> type of handler
  */
 @SuppressWarnings("unchecked")
-class CommandProvider<H extends CommandHandler<?, ?>> implements Provider<H> {
+class CommandProvider<H extends CommandHandler<?, ?>> {
 
   private final ApplicationContext applicationContext;
   private final Class<H> type;
@@ -44,7 +42,6 @@ class CommandProvider<H extends CommandHandler<?, ?>> implements Provider<H> {
     this.type = type;
   }
 
-  @Override
   public H get() {
     return applicationContext.getBean(type);
   }

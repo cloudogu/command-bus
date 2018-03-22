@@ -27,6 +27,7 @@ package de.triology.cb.spring;
 import de.triology.cb.Command;
 import de.triology.cb.CommandBus;
 import de.triology.cb.CommandHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Spring backed Command-Bus.
@@ -40,6 +41,7 @@ public class SpringCommandBus implements CommandBus {
    *
    * @param registry registry
    */
+  @Autowired
   public SpringCommandBus(Registry registry) {
     this.registry = registry;
   }

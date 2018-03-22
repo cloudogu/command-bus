@@ -24,6 +24,7 @@
 package de.triology.cb.spring;
 
 import de.triology.cb.ByeCommandHandler;
+import de.triology.cb.CommandBus;
 import de.triology.cb.HelloCommand;
 import de.triology.cb.HelloCommandHandler;
 import de.triology.cb.MessageCollector;
@@ -39,17 +40,17 @@ import static org.junit.Assert.assertEquals;
   HelloCommandHandler.class,
   ByeCommandHandler.class,
   MessageCollector.class,
-  Registry.class
+  Registry.class,
+  SpringCommandBus.class
 })
 @RunWith(SpringJUnit4ClassRunner.class)
 public class SpringITCase {
 
   @Autowired
-  private Registry registry;
+  private CommandBus commandBus;
 
   @Test
   public void execute() {
-    SpringCommandBus commandBus = new SpringCommandBus(registry);
     String result = commandBus.execute(new HelloCommand("bob"));
     assertEquals("hello bob", result);
   }

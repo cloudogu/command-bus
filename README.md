@@ -1,8 +1,8 @@
 # command-bus
 [![Build Status](https://opensource.triology.de/jenkins/buildStatus/icon?job=triologygmbh-github/command-bus/master)](https://opensource.triology.de/jenkins/blue/organizations/jenkins/triologygmbh-github%2Fcommand-bus/branches/)
-[![Quality Gates](https://sonarcloud.io/api/badges/gate?key=de.triology.cb%3Acommand-bus)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
-[![Coverage](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus&metric=coverage)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
-[![Technical Debt](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus)
+[![Quality Gates](https://sonarcloud.io/api/badges/gate?key=de.triology.cb%3Acommand-bus-parent)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus-parent)
+[![Coverage](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus-parent)
+[![Technical Debt](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus-parent&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus-parent)
 
 CDI/Spring enabled Java Command-Bus
 

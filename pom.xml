@@ -29,10 +29,20 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>de.triology.cb</groupId>
-  <artifactId>command-bus</artifactId>
+  <artifactId>command-bus-parent</artifactId>
+  <version>0.2.3-SNAPSHOT</version>
+
   <name>command-bus</name>
   <description>CDI enabled Java Command-Bus</description>
-  <version>0.2.3-SNAPSHOT</version>
+
+  <modules>
+    <module>command-bus-core</module>
+    <module>command-bus-spring</module>
+    <module>command-bus-cdi</module>
+  </modules>
+
+  <packaging>pom</packaging>
+
   <url>https://github.com/triologygmbh/command-bus</url>
 
   <licenses>
@@ -74,7 +84,7 @@
         <organizationUrl>https://www.triology.de/</organizationUrl>
         <timezone>Europe/Berlin</timezone>
     </developer>
-    
+
   </developers>
 
   <scm>
@@ -102,12 +112,6 @@
 
   <dependencies>
 
-    <dependency>
-      <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-7.0</artifactId>
-      <type>pom</type>
-      <scope>provided</scope>
-    </dependency>
 
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -150,32 +154,6 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.jboss.arquillian.container</groupId>
-      <artifactId>arquillian-weld-ee-embedded-1.1</artifactId>
-      <version>1.0.0.Final</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.weld</groupId>
-      <artifactId>weld-core</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>io.prometheus</groupId>
-      <artifactId>simpleclient</artifactId>
-      <version>0.1.0</version>
-      <optional>true</optional>
-    </dependency>
-
   </dependencies>
 
   <dependencyManagement>
@@ -183,28 +161,11 @@
     <dependencies>
 
       <dependency>
-        <groupId>org.jboss.spec</groupId>
-        <artifactId>jboss-javaee-7.0</artifactId>
-        <version>1.0.3.Final</version>
-        <type>pom</type>
-        <scope>provided</scope>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>command-bus-core</artifactId>
+        <version>${project.version}</version>
       </dependency>
 
-      <dependency>
-        <groupId>org.jboss.arquillian</groupId>
-        <artifactId>arquillian-bom</artifactId>
-        <version>1.1.13.Final</version>
-        <scope>import</scope>
-        <type>pom</type>
-      </dependency>
-
-      <dependency>
-        <groupId>org.jboss.weld</groupId>
-        <artifactId>weld-core-bom</artifactId>
-        <version>1.1.0.Final</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
     </dependencies>
 
   </dependencyManagement>

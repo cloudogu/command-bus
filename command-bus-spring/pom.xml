@@ -30,12 +30,12 @@
   <parent>
     <artifactId>command-bus-parent</artifactId>
     <groupId>de.triology.cb</groupId>
-    <version>0.2.3-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>command-bus-spring</artifactId>
-  <version>0.2.3-SNAPSHOT</version>
+  <version>1.0.0</version>
 
   <dependencyManagement>
 

@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
  * Timer measures elapsed time in nanoseconds. The timer captures the time in nanoseconds during the creation. To print
  * the elapsed time use the toString method.
  */
-public class Timer {
+class Timer {
 
   private long startedAt;
 

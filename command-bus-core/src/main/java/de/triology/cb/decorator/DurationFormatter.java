@@ -32,7 +32,7 @@ import static java.util.concurrent.TimeUnit.*;
 /**
  * DurationFormatter formats duration with its abbreviate time unit.
  */
-public final class DurationFormatter {
+final class DurationFormatter {
 
   private DurationFormatter(){}
 

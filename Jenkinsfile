@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@acc3ade')
+@Library('github.com/cloudogu/ces-build-lib@9bcafcb')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -13,10 +13,7 @@ node {
 
   catchError {
 
-    def mvnHome = tool 'M3'
-    def javaHome = tool 'JDK8'
-
-    Maven mvn = new MavenLocal(this, mvnHome, javaHome)
+    Maven mvn = new MavenWrapper(this)
     Git git = new Git(this)
 
 

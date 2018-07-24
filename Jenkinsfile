@@ -11,11 +11,10 @@ properties([
 
 node {
 
+  Maven mvn = new MavenWrapper(this)
+  Git git = new Git(this)
+
   catchError {
-
-    Maven mvn = new MavenWrapper(this)
-    Git git = new Git(this)
-
 
     stage('Checkout') {
       checkout scm
@@ -69,7 +68,7 @@ node {
   // Find maven warnings and visualize in job
   warnings consoleParsers: [[parserName: 'Maven']]
 
-  mailIfStatusChanged(findEmailRecipients(env.EMAIL_RECIPIENTS_COMMAND_BUS))
+  mailIfStatusChanged(git.commitAuthorEmail)
 }
 
 boolean preconditionsForDeploymentFulfilled() {

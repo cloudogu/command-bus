@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@9bcafcb')
+@Library('github.com/cloudogu/ces-build-lib@b676f08')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -51,7 +51,8 @@ node {
     stage('Deploy') {
       if (preconditionsForDeploymentFulfilled()) {
 
-        mvn.setDeploymentRepository('ossrh', 'https://oss.sonatype.org/', 'de.triology-mavenCentral-acccessToken')
+        mvn.useDeploymentRepository([id: 'ossrh', url: 'https://oss.sonatype.org/',
+                                     credentialsId: 'de.triology-mavenCentral-acccessToken', type: 'Nexus2'])
 
         mvn.setSignatureCredentials('de.triology-mavenCentral-secretKey-asc-file',
                                     'de.triology-mavenCentral-secretKey-Passphrase')

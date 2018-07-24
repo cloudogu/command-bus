@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@b676f08')
+@Library('github.com/cloudogu/ces-build-lib@24c4f03')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -29,17 +29,15 @@ node {
     }
 
     stage('Unit Test') {
-      mvn "test"
+      mvn 'test'
     }
 
     stage('Integration Test') {
-      mvn "verify -DskipUnitTests"
+      mvn 'verify -DskipUnitTests'
     }
 
     stage('Statical Code Analysis') {
-      def sonarQube = new SonarQube(this, 'sonarcloud.io')
-      sonarQube.updateAnalysisResultOfPullRequestsToGitHub('sonarqube-gh')
-      sonarQube.isUsingBranchPlugin = true
+      def sonarQube = new SonarCloud(this, [sonarQubeEnv: 'sonarcloud.io', sonarOrganization: 'triologygmbh'])
 
       sonarQube.analyzeWith(mvn)
 

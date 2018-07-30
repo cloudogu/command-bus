@@ -28,7 +28,7 @@
 
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>de.triology.cb</groupId>
+  <groupId>com.cloudogu.cb</groupId>
   <artifactId>command-bus-parent</artifactId>
   <version>1.0.1-SNAPSHOT</version>
 
@@ -43,60 +43,60 @@
 
   <packaging>pom</packaging>
 
-  <url>https://github.com/triologygmbh/command-bus</url>
+  <url>https://github.com/cloudogu/command-bus</url>
 
   <licenses>
     <license>
       <name>MIT License</name>
-      <url>https://github.com/triologygmbh/command-bus/blob/master/LICENSE</url>
+      <url>https://github.com/cloudogu/command-bus/blob/master/LICENSE</url>
     </license>
   </licenses>
 
   <inceptionYear>2017</inceptionYear>
 
   <organization>
-    <name>TRIOLOGY GmbH</name>
-    <url>https://www.triology.de/</url>
+    <name>Cloudogu GmbH</name>
+    <url>https://cloudogu.com/</url>
   </organization>
 
   <developers>
 
     <developer>
       <name>Sebastian Sdorra</name>
-      <email>sebastian.sdorra@triology.de</email>
+      <email>sebastian.sdorra@cloudogu.com</email>
       <organization>TRIOLOGY GmbH</organization>
-      <organizationUrl>https://www.triology.de/</organizationUrl>
+      <organizationUrl>https://cloudogu.com/</organizationUrl>
       <timezone>Europe/Berlin</timezone>
     </developer>
 
     <developer>
         <name>Philipp Czora</name>
-        <email>philipp.czora@triology.de</email>
+        <email>philipp.czora@cloudogu.com</email>
         <organization>TRIOLOGY GmbH</organization>
-        <organizationUrl>https://www.triology.de/</organizationUrl>
+        <organizationUrl>https://cloudogu.com/</organizationUrl>
         <timezone>Europe/Berlin</timezone>
     </developer>
 
     <developer>
         <name>Johannes Schnatterer</name>
-        <email>johannes.schnatterer@triology.de</email>
+        <email>johannes.schnatterer@cloudogu.com</email>
         <organization>TRIOLOGY GmbH</organization>
-        <organizationUrl>https://www.triology.de/</organizationUrl>
+        <organizationUrl>https://cloudogu.com/</organizationUrl>
         <timezone>Europe/Berlin</timezone>
     </developer>
 
   </developers>
 
   <scm>
-    <connection>scm:git:https://github.com/triologygmbh/command-bus</connection>
-    <developerConnection>scm:git:https://github.com/triologygmbh/command-bus</developerConnection>
-    <url>https://github.com/triologygmbh/command-bus.git</url>
+    <connection>scm:git:https://github.com/cloudogu/command-bus</connection>
+    <developerConnection>scm:git:https://github.com/cloudogu/command-bus</developerConnection>
+    <url>https://github.com/cloudogu/command-bus.git</url>
     <tag>HEAD</tag>
   </scm>
 
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/triologygmbh/command-bus/issues</url>
+    <url>https://github.com/cloudogu/command-bus/issues</url>
   </issueManagement>
 
   <distributionManagement>

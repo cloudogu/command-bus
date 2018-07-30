@@ -37,7 +37,7 @@ node {
     }
 
     stage('Statical Code Analysis') {
-      def sonarQube = new SonarCloud(this, [sonarQubeEnv: 'sonarcloud.io', sonarOrganization: 'triologygmbh'])
+      def sonarQube = new SonarCloud(this, [sonarQubeEnv: 'sonarcloud.io-cloudogu'])
 
       sonarQube.analyzeWith(mvn)
 
@@ -50,10 +50,10 @@ node {
       if (preconditionsForDeploymentFulfilled()) {
 
         mvn.useDeploymentRepository([id: 'ossrh', url: 'https://oss.sonatype.org/',
-                                     credentialsId: 'de.triology-mavenCentral-acccessToken', type: 'Nexus2'])
+                                     credentialsId: 'mavenCentral-acccessToken', type: 'Nexus2'])
 
-        mvn.setSignatureCredentials('de.triology-mavenCentral-secretKey-asc-file',
-                                    'de.triology-mavenCentral-secretKey-Passphrase')
+        mvn.setSignatureCredentials('mavenCentral-secretKey-asc-file',
+                                    'mavenCentral-secretKey-Passphrase')
 
         mvn.deployToNexusRepositoryWithStaging()
       }

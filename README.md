@@ -1,8 +1,8 @@
 # command-bus
-[![Build Status](https://opensource.triology.de/jenkins/buildStatus/icon?job=triologygmbh-github/command-bus/master)](https://opensource.triology.de/jenkins/blue/organizations/jenkins/triologygmbh-github%2Fcommand-bus/branches/)
-[![Quality Gates](https://sonarcloud.io/api/badges/gate?key=de.triology.cb%3Acommand-bus-parent)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus-parent)
-[![Coverage](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus-parent)
-[![Technical Debt](https://sonarcloud.io/api/badges/measure?key=de.triology.cb%3Acommand-bus-parent&metric=sqale_debt_ratio)](https://sonarcloud.io/dashboard?id=de.triology.cb%3Acommand-bus-parent)
+[![Build Status](https://oss.cloudogu.com/jenkins/buildStatus/icon?job=cloudogu-github/command-bus/master)](https://opensource.triology.de/jenkins/blue/organizations/jenkins/triologygmbh-github%2Fcommand-bus/branches/)
+[![Quality Gates](https://sonarcloud.io/api/project_badges/measure?project=com.cloudogu.cb%3Acommand-bus-parent&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.cloudogu.cb%3Acommand-bus-parent)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.cloudogu.cb%3Acommand-bus-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=com.cloudogu.cb%3Acommand-bus-parent)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=com.cloudogu.cb%3Acommand-bus-parent&metric=sqale_index)](https://sonarcloud.io/dashboard?id=com.cloudogu.cb%3Acommand-bus-parent)
 
 CDI/Spring enabled Java Command-Bus
 
@@ -33,9 +33,9 @@ There are different versions of command-bus for either CDI or spring.
 
 ```XML
 <dependency>
-    <groupId>de.triology.cb</groupId>
+    <groupId>com.cloudogu.cb</groupId>
     <artifactId>command-bus-cdi</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -46,9 +46,9 @@ There are different versions of command-bus for either CDI or spring.
 
 ```XML
 <dependency>
-    <groupId>de.triology.cb</groupId>
+    <groupId>com.cloudogu.cb</groupId>
     <artifactId>command-bus-spring</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 

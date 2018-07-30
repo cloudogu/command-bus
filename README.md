@@ -15,8 +15,8 @@ CDI/Spring enabled Java Command-Bus
 
 ## Usage
 
-Add the [latest stable version of command-bus](http://search.maven.org/#search|gav|1|g%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus-cdi%22) to the dependency management tool of your choice.
-You can also get snapshot versions from our [snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/de/triology/cb/command-bus/) (for the most recent commit on develop branch).
+Add the [latest stable version of command-bus](http://search.maven.org/#search|gav|1|g%3A%22com.cloudogu.cb%22%20AND%20a%3A%22command-bus-cdi%22) to the dependency management tool of your choice.
+You can also get snapshot versions from our [snapshot repository](https://oss.sonatype.org/content/repositories/snapshots/com/cloudogu/cb/) (for the most recent commit on develop branch).
 To do so, add the following repo to your `pom.xml` or `settings.xml`:
 ```xml
 <repository>
@@ -39,7 +39,7 @@ There are different versions of command-bus for either CDI or spring.
 </dependency>
 ```
 
-[![Maven Central](https://img.shields.io/maven-central/v/de.triology.cb/command-bus-cdi.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus-cdi%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.cloudogu.cb/command-bus-cdi.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.cloudogu.cb%22%20AND%20a%3A%22command-bus-cdi%22)
 
 
 ### Dependency for Spring
@@ -52,7 +52,7 @@ There are different versions of command-bus for either CDI or spring.
 </dependency>
 ```
 
-[![Maven Central](https://img.shields.io/maven-central/v/de.triology.cb/command-bus-spring.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22de.triology.cb%22%20AND%20a%3A%22command-bus-spring%22)
+[![Maven Central](https://img.shields.io/maven-central/v/com.cloudogu.cb/command-bus-spring.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.cloudogu.cb%22%20AND%20a%3A%22command-bus-spring%22)
 
 ### API
 
@@ -89,7 +89,7 @@ The `CommandHandler`s for CDI and Spring both use a `Registry` ([CDI](command-bu
 First example is the logging decorator ([`LoggingCommandBus`](command-bus-core/src/main/java/de/triology/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
 
 ### Prometheus metric decorators
-The Triology Command Bus provides two Prometheus metrics decorators. More information on Prometheus can be found on the
+The Command Bus provides two Prometheus metrics decorators. More information on Prometheus can be found on the
 project's [website](https://prometheus.io).
 In order to use them, make sure to provide the `io.prometheus:simpleclient` dependency on the classpath.
 

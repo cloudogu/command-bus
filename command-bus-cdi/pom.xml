@@ -30,7 +30,7 @@
   <parent>
     <artifactId>command-bus-parent</artifactId>
     <groupId>com.cloudogu.cb</groupId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 

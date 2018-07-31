@@ -36,7 +36,7 @@ node {
       mvn 'verify -DskipUnitTests'
     }
 
-    stage('Statical Code Analysis') {
+    stage('Static Code Analysis') {
       def sonarQube = new SonarCloud(this, [sonarQubeEnv: 'sonarcloud.io-cloudogu'])
 
       sonarQube.analyzeWith(mvn)

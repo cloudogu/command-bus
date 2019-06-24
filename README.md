@@ -1,5 +1,5 @@
 # command-bus
-[![Build Status](https://oss.cloudogu.com/jenkins/buildStatus/icon?job=cloudogu-github/command-bus/master)](https://opensource.triology.de/jenkins/blue/organizations/jenkins/triologygmbh-github%2Fcommand-bus/branches/)
+[![Build Status](https://oss.cloudogu.com/jenkins/buildStatus/icon?job=cloudogu-github/command-bus/master)](https://oss.cloudogu.com/jenkins/blue/organizations/jenkins/cloudogu-github%2Fcommand-bus/branches/)
 [![Quality Gates](https://sonarcloud.io/api/project_badges/measure?project=com.cloudogu.cb%3Acommand-bus-parent&metric=alert_status)](https://sonarcloud.io/dashboard?id=com.cloudogu.cb%3Acommand-bus-parent)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=com.cloudogu.cb%3Acommand-bus-parent&metric=coverage)](https://sonarcloud.io/dashboard?id=com.cloudogu.cb%3Acommand-bus-parent)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=com.cloudogu.cb%3Acommand-bus-parent&metric=sqale_index)](https://sonarcloud.io/dashboard?id=com.cloudogu.cb%3Acommand-bus-parent)

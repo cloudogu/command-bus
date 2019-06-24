@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@24c4f03')
+@Library('github.com/cloudogu/ces-build-lib@eb702acc')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -84,12 +84,6 @@ boolean preconditionsForDeploymentFulfilled() {
 
 private boolean shouldBranchBeDeployed() {
   return env.BRANCH_NAME == 'master' || env.BRANCH_NAME == 'develop'
-}
-
-private boolean isBuildSuccessful() {
-  currentBuild.currentResult == 'SUCCESS' &&
-    // Build result == SUCCESS seems not to set be during pipeline execution.
-    (currentBuild.result == null || currentBuild.result == 'SUCCESS')
 }
 
 void initMaven(Maven mvn) {

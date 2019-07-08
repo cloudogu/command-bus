@@ -11,7 +11,8 @@ properties([
 
 node {
 
-  Maven mvn = new MavenWrapper(this)
+  def javaHome = tool 'JDK8'
+  Maven mvn = new MavenWrapper(this, javaHome)
   Git git = new Git(this)
 
   catchError {

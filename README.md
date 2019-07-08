@@ -103,6 +103,39 @@ The `PrometheusMetricsTimingCommandBus` captures the time a command's execution 
 Prometheus Histogram. Similarly to the `PrometheusMetricsCountingCommandBus`, the Histogram needs to be provided as a 
 constructor parameter.
 
+### Micrometer metric decorators
+The Command Bus provides two Micrometer metrics decorators. More information on Micrometer can be found on the
+project's [website](https://micrometer.io).
+In order to use them, make sure to provide a micrometer registry implementation such as prometheus `io.micrometer:micrometer-registry-prometheus`.
+
+#### MicrometerCountingCommandBus
+
+The `MicrometerCountingCommandBus` counts every executed command, using a Micrometer Counter e.g.:
+
+```java
+CommandBus commandBusImpl = ...;
+MicrometerCountingCommandBus commandBus = new MicrometerCountingCommandBus(commandBusImpl, 
+  c -> Counter.builder("command.counter")
+    .description("command execution counter")
+    .tags("command", c.getSimpleName())
+    .register(Metrics.globalRegistry)
+);
+```
+
+#### MicrometerTimingCommandBus
+
+The `MicrometerTimingCommandBus` measures the elapsed time for every command execution by using a Micrometer a Micrometer Counter e.g.:
+
+```java
+CommandBus commandBusImpl = ...;
+MicrometerTimingCommandBus commandBus = new MicrometerTimingCommandBus(commandBusImpl, 
+  c -> Timer.builder("command.timer")
+    .description("command execution timer")
+    .tags("command", c.getSimpleName())
+    .register(Metrics.globalRegistry)
+);
+```
+
 ## Return values
 
 * `Command`s can specify return values. See [`HelloCommand`](command-bus-core/src/test/java/de/triology/cb/HelloCommand.java) and  [`de.triology.cb.EchoCommandHandler`](command-bus-core/src/test/java/de/triology/cb/HelloCommandHandler.java) for example.

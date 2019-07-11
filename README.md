@@ -139,9 +139,9 @@ The `MicrometerCountingCommandBus` counts every executed command, using a Microm
 ```java
 CommandBus commandBusImpl = ...;
 MicrometerCountingCommandBus commandBus = new MicrometerCountingCommandBus(commandBusImpl, 
-  c -> Counter.builder("command.counter")
+  commandClass -> Counter.builder("command.counter")
     .description("command execution counter")
-    .tags("command", c.getSimpleName())
+    .tags("command", commandClass.getSimpleName())
     .register(Metrics.globalRegistry)
 );
 ```
@@ -153,9 +153,9 @@ The `MicrometerTimingCommandBus` measures the elapsed time for every command exe
 ```java
 CommandBus commandBusImpl = ...;
 MicrometerTimingCommandBus commandBus = new MicrometerTimingCommandBus(commandBusImpl, 
-  c -> Timer.builder("command.timer")
+  commandClass -> Timer.builder("command.timer")
     .description("command execution timer")
-    .tags("command", c.getSimpleName())
+    .tags("command", commandClass.getSimpleName())
     .register(Metrics.globalRegistry)
 );
 ```

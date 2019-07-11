@@ -6,6 +6,30 @@
 
 CDI/Spring enabled Java Command-Bus
 
+# Table of contents
+<!-- Update with `doctoc --notitle README.md`. See https://github.com/thlorenz/doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+  - [Concepts](#concepts)
+  - [Usage](#usage)
+    - [Dependency for CDI](#dependency-for-cdi)
+    - [Dependency for Spring](#dependency-for-spring)
+    - [API](#api)
+    - [Internals](#internals)
+  - [Command Bus Decorators](#command-bus-decorators)
+    - [Prometheus metric decorators](#prometheus-metric-decorators)
+      - [PrometheusMetricsCountingCommandBus](#prometheusmetricscountingcommandbus)
+      - [PrometheusMetricsTimingCommandBus](#prometheusmetricstimingcommandbus)
+    - [Micrometer metric decorators](#micrometer-metric-decorators)
+      - [MicrometerCountingCommandBus](#micrometercountingcommandbus)
+      - [MicrometerTimingCommandBus](#micrometertimingcommandbus)
+  - [Return values](#return-values)
+- [Examples](#examples)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Concepts
 
 * [`Command`](command-bus-core/src/main/java/de/triology/cb/Command.java) - Marker Interface

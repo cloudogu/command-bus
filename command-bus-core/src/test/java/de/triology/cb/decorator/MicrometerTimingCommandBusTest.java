@@ -23,45 +23,70 @@
  */
 package de.triology.cb.decorator;
 
+import de.triology.cb.Command;
 import de.triology.cb.CommandBus;
 import de.triology.cb.EchoCommand;
-import io.prometheus.client.Counter;
+import io.micrometer.core.instrument.Timer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PrometheusMetricsCountingCommandBusTest {
+public class MicrometerTimingCommandBusTest {
 
   @Mock
   private CommandBus commandBus;
 
   @Mock
-  private Counter counter;
+  private Timer timerOne;
 
   @Mock
-  private Counter.Child child;
+  private Timer timerTwo;
 
-  private PrometheusMetricsCountingCommandBus decoratedCommandBus;
+  @Mock
+  private Clock clock;
+
+  private MicrometerTimingCommandBus decoratedCommandBus;
+
+  private final Instant start = Instant.now();
+  private Instant current = start;
 
   @Before
   public void setUp() {
-    when(counter.labels(EchoCommand.class.getSimpleName())).thenReturn(child);
-    this.decoratedCommandBus = new PrometheusMetricsCountingCommandBus(commandBus, counter);
+    decoratedCommandBus = new MicrometerTimingCommandBus(commandBus, command -> {
+      if (EchoCommand.class.isAssignableFrom(command)) {
+        return timerOne;
+      }
+      return timerTwo;
+    }, clock);
+
+    when(clock.instant()).then(ic -> {
+      current = current.plusSeconds(1L);
+      return current;
+    });
   }
 
   @Test
   public void execute() {
-    EchoCommand hello = new EchoCommand("joe");
-    decoratedCommandBus.execute(hello);
-    verify(commandBus).execute(hello);
-    verify(counter).labels(hello.getClass().getSimpleName());
-    verify(child).inc();
+    decoratedCommandBus.execute(new EchoCommand("hello"));
+    verify(timerOne).record(Duration.of(1L, ChronoUnit.SECONDS));
+
+    decoratedCommandBus.execute(new OtherCommand());
+    verify(timerTwo).record(Duration.of(1L, ChronoUnit.SECONDS));
+  }
+
+  public static class OtherCommand implements Command<Void> {
+
   }
 
 }

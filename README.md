@@ -6,6 +6,30 @@
 
 CDI/Spring enabled Java Command-Bus
 
+# Table of contents
+<!-- Update with `doctoc --notitle README.md`. See https://github.com/thlorenz/doctoc -->
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+
+  - [Concepts](#concepts)
+  - [Usage](#usage)
+    - [Dependency for CDI](#dependency-for-cdi)
+    - [Dependency for Spring](#dependency-for-spring)
+    - [API](#api)
+    - [Internals](#internals)
+  - [Command Bus Decorators](#command-bus-decorators)
+    - [Prometheus metric decorators](#prometheus-metric-decorators)
+      - [PrometheusMetricsCountingCommandBus](#prometheusmetricscountingcommandbus)
+      - [PrometheusMetricsTimingCommandBus](#prometheusmetricstimingcommandbus)
+    - [Micrometer metric decorators](#micrometer-metric-decorators)
+      - [MicrometerCountingCommandBus](#micrometercountingcommandbus)
+      - [MicrometerTimingCommandBus](#micrometertimingcommandbus)
+  - [Return values](#return-values)
+- [Examples](#examples)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Concepts
 
 * [`Command`](command-bus-core/src/main/java/de/triology/cb/Command.java) - Marker Interface
@@ -103,6 +127,41 @@ The `PrometheusMetricsTimingCommandBus` captures the time a command's execution 
 Prometheus Histogram. Similarly to the `PrometheusMetricsCountingCommandBus`, the Histogram needs to be provided as a 
 constructor parameter.
 
+### Micrometer metric decorators
+The Command Bus provides two Micrometer metrics decorators. More information on Micrometer can be found on the
+project's [website](https://micrometer.io).
+In order to use them, make sure to provide a micrometer registry implementation such as prometheus `io.micrometer:micrometer-registry-prometheus`.
+
+See [cloudogu/springboot-micrometer-demo-command-bus](cloudogu/springboot-micrometer-demo-command-bus) for a complete example.
+
+#### MicrometerCountingCommandBus
+
+The `MicrometerCountingCommandBus` counts every executed command, using a Micrometer Counter e.g.:
+
+```java
+CommandBus commandBusImpl = ...;
+MicrometerCountingCommandBus commandBus = new MicrometerCountingCommandBus(commandBusImpl, 
+  commandClass -> Counter.builder("command.counter")
+    .description("command execution counter")
+    .tags("command", commandClass.getSimpleName())
+    .register(Metrics.globalRegistry)
+);
+```
+
+#### MicrometerTimingCommandBus
+
+The `MicrometerTimingCommandBus` measures the elapsed time for every command execution by using a Micrometer a Micrometer Counter e.g.:
+
+```java
+CommandBus commandBusImpl = ...;
+MicrometerTimingCommandBus commandBus = new MicrometerTimingCommandBus(commandBusImpl, 
+  commandClass -> Timer.builder("command.timer")
+    .description("command execution timer")
+    .tags("command", commandClass.getSimpleName())
+    .register(Metrics.globalRegistry)
+);
+```
+
 ## Return values
 
 * `Command`s can specify return values. See [`HelloCommand`](command-bus-core/src/test/java/de/triology/cb/HelloCommand.java) and  [`de.triology.cb.EchoCommandHandler`](command-bus-core/src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
@@ -110,4 +169,7 @@ constructor parameter.
 
 # Examples
 
-[cloudogu/smeagol](https://github.com/cloudogu/smeagol)
+## Spring
+
+* [cloudogu/smeagol](https://github.com/cloudogu/smeagol)
+* [cloudogu/springboot-micrometer-demo-command-bus](cloudogu/springboot-micrometer-demo-command-bus)

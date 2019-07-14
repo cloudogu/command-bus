@@ -23,45 +23,56 @@
  */
 package de.triology.cb.decorator;
 
+import de.triology.cb.Command;
 import de.triology.cb.CommandBus;
 import de.triology.cb.EchoCommand;
-import io.prometheus.client.Counter;
+import io.micrometer.core.instrument.Counter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PrometheusMetricsCountingCommandBusTest {
+public class MicrometerCountingCommandBusTest {
 
   @Mock
   private CommandBus commandBus;
 
   @Mock
-  private Counter counter;
+  private Counter counterOne;
 
   @Mock
-  private Counter.Child child;
+  private Counter counterTwo;
 
-  private PrometheusMetricsCountingCommandBus decoratedCommandBus;
+  private MicrometerCountingCommandBus decoratedCommandBus;
 
   @Before
   public void setUp() {
-    when(counter.labels(EchoCommand.class.getSimpleName())).thenReturn(child);
-    this.decoratedCommandBus = new PrometheusMetricsCountingCommandBus(commandBus, counter);
+    decoratedCommandBus = new MicrometerCountingCommandBus(commandBus, command -> {
+      if (EchoCommand.class.isAssignableFrom(command)) {
+        return counterOne;
+      }
+      return counterTwo;
+    });
   }
 
   @Test
   public void execute() {
-    EchoCommand hello = new EchoCommand("joe");
-    decoratedCommandBus.execute(hello);
-    verify(commandBus).execute(hello);
-    verify(counter).labels(hello.getClass().getSimpleName());
-    verify(child).inc();
+    decoratedCommandBus.execute(new EchoCommand("hello"));
+    decoratedCommandBus.execute(new EchoCommand("hello 2"));
+    decoratedCommandBus.execute(new OtherCommand());
+    decoratedCommandBus.execute(new OtherCommand());
+
+    verify(counterOne, times(2)).increment();
+    verify(counterTwo, times(2)).increment();
+  }
+
+  public static class OtherCommand implements Command<Void> {
+
   }
 
 }

@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class PrometheusMetricsTimingCommandBusTest {
   @Mock
-  private CommandBus decorated;
+  private CommandBus commandBus;
 
   @Mock
   private Histogram histogram;
@@ -49,21 +49,21 @@ public class PrometheusMetricsTimingCommandBusTest {
   @Mock
   private Histogram.Timer timer;
 
-  private PrometheusMetricsTimingCommandBus commandBus;
+  private PrometheusMetricsTimingCommandBus decoratedCommandBus;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     when(histogram.labels(EchoCommand.class.getSimpleName())).thenReturn(child);
     when(child.startTimer()).thenReturn(timer);
-    commandBus = new PrometheusMetricsTimingCommandBus(decorated, histogram);
+    decoratedCommandBus = new PrometheusMetricsTimingCommandBus(commandBus, histogram);
   }
 
   @Test
-  public void execute() throws Exception {
+  public void execute() {
     EchoCommand echoCommand = new EchoCommand("July");
-    commandBus.execute(echoCommand);
+    decoratedCommandBus.execute(echoCommand);
     verify(histogram).labels(EchoCommand.class.getSimpleName());
-    verify(decorated).execute(echoCommand);
+    verify(commandBus).execute(echoCommand);
     verify(timer).observeDuration();
   }
 

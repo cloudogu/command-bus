@@ -40,7 +40,7 @@ import static org.mockito.Mockito.verify;
 public class MicrometerCountingCommandBusTest {
 
   @Mock
-  private CommandBus decorated;
+  private CommandBus commandBus;
 
   @Mock
   private Counter counterOne;
@@ -48,11 +48,11 @@ public class MicrometerCountingCommandBusTest {
   @Mock
   private Counter counterTwo;
 
-  private MicrometerCountingCommandBus commandBus;
+  private MicrometerCountingCommandBus decoratedCommandBus;
 
   @Before
   public void setUp() {
-    commandBus = new MicrometerCountingCommandBus(decorated, command -> {
+    decoratedCommandBus = new MicrometerCountingCommandBus(commandBus, command -> {
       if (EchoCommand.class.isAssignableFrom(command)) {
         return counterOne;
       }
@@ -62,10 +62,10 @@ public class MicrometerCountingCommandBusTest {
 
   @Test
   public void execute() {
-    commandBus.execute(new EchoCommand("hello"));
-    commandBus.execute(new EchoCommand("hello 2"));
-    commandBus.execute(new OtherCommand());
-    commandBus.execute(new OtherCommand());
+    decoratedCommandBus.execute(new EchoCommand("hello"));
+    decoratedCommandBus.execute(new EchoCommand("hello 2"));
+    decoratedCommandBus.execute(new OtherCommand());
+    decoratedCommandBus.execute(new OtherCommand());
 
     verify(counterOne, times(2)).increment();
     verify(counterTwo, times(2)).increment();

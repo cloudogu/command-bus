@@ -45,7 +45,7 @@ import static org.mockito.Mockito.when;
 public class MicrometerTimingCommandBusTest {
 
   @Mock
-  private CommandBus decorated;
+  private CommandBus commandBus;
 
   @Mock
   private Timer timerOne;
@@ -56,14 +56,14 @@ public class MicrometerTimingCommandBusTest {
   @Mock
   private Clock clock;
 
-  private MicrometerTimingCommandBus commandBus;
+  private MicrometerTimingCommandBus decoratedCommandBus;
 
   private final Instant start = Instant.now();
   private Instant current = start;
 
   @Before
   public void setUp() {
-    commandBus = new MicrometerTimingCommandBus(decorated, command -> {
+    decoratedCommandBus = new MicrometerTimingCommandBus(commandBus, command -> {
       if (EchoCommand.class.isAssignableFrom(command)) {
         return timerOne;
       }
@@ -78,10 +78,10 @@ public class MicrometerTimingCommandBusTest {
 
   @Test
   public void execute() {
-    commandBus.execute(new EchoCommand("hello"));
+    decoratedCommandBus.execute(new EchoCommand("hello"));
     verify(timerOne).record(Duration.of(1L, ChronoUnit.SECONDS));
 
-    commandBus.execute(new OtherCommand());
+    decoratedCommandBus.execute(new OtherCommand());
     verify(timerTwo).record(Duration.of(1L, ChronoUnit.SECONDS));
   }
 

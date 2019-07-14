@@ -39,7 +39,7 @@ import static org.mockito.Mockito.when;
 public class PrometheusMetricsCountingCommandBusTest {
 
   @Mock
-  private CommandBus decorated;
+  private CommandBus commandBus;
 
   @Mock
   private Counter counter;
@@ -47,19 +47,19 @@ public class PrometheusMetricsCountingCommandBusTest {
   @Mock
   private Counter.Child child;
 
-  private PrometheusMetricsCountingCommandBus commandBus;
+  private PrometheusMetricsCountingCommandBus decoratedCommandBus;
 
   @Before
-  public void setUp() throws Exception {
+  public void setUp() {
     when(counter.labels(EchoCommand.class.getSimpleName())).thenReturn(child);
-    this.commandBus = new PrometheusMetricsCountingCommandBus(decorated, counter);
+    this.decoratedCommandBus = new PrometheusMetricsCountingCommandBus(commandBus, counter);
   }
 
   @Test
-  public void execute() throws Exception {
+  public void execute() {
     EchoCommand hello = new EchoCommand("joe");
-    commandBus.execute(hello);
-    verify(decorated).execute(hello);
+    decoratedCommandBus.execute(hello);
+    verify(commandBus).execute(hello);
     verify(counter).labels(hello.getClass().getSimpleName());
     verify(child).inc();
   }

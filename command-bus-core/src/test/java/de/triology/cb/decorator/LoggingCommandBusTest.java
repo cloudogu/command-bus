@@ -45,10 +45,10 @@ import static org.mockito.Mockito.verify;
 public class LoggingCommandBusTest {
 
   @Mock
-  private CommandBus decorated;
+  private CommandBus commandBus;
 
   @InjectMocks
-  private LoggingCommandBus loggingCommandBus;
+  private LoggingCommandBus decoratedCommandBus;
 
   @After
   public void cleanUp() {
@@ -60,8 +60,8 @@ public class LoggingCommandBusTest {
     LogbackCapturingAppender capturing = LogbackCapturingAppender.weaveInto(LoggingCommandBus.LOG);
 
     EchoCommand echoCommand = new EchoCommand("joe");
-    loggingCommandBus.execute(echoCommand);
-    verify(decorated).execute(echoCommand);
+    decoratedCommandBus.execute(echoCommand);
+    verify(commandBus).execute(echoCommand);
 
     List<String> messages = capturing.getCapturedLogMessages();
     assertThat(messages.get(0)).contains("start").contains("EchoCommand");

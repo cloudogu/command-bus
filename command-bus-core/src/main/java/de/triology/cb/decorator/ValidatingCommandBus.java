@@ -31,12 +31,20 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.util.Set;
 
-
+/**
+ * Command bus decorator which validates the command before execution.
+ */
 public class ValidatingCommandBus implements CommandBus {
 
   private final CommandBus decorated;
   private final Validator validator;
 
+  /**
+   * Creates a new ValidatingCommandBus
+   *
+   * @param decorated command bus to decorate
+   * @param validator validator
+   */
   public ValidatingCommandBus(CommandBus decorated, Validator validator) {
     this.decorated = decorated;
     this.validator = validator;

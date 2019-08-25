@@ -36,7 +36,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link LoggingCommandBus}.
@@ -62,6 +64,24 @@ public class LoggingCommandBusTest {
     EchoCommand echoCommand = new EchoCommand("joe");
     loggingCommandBus.execute(echoCommand);
     verify(decorated).execute(echoCommand);
+
+    List<String> messages = capturing.getCapturedLogMessages();
+    assertThat(messages.get(0)).contains("start").contains("EchoCommand");
+    assertThat(messages.get(1)).contains("finish").contains("EchoCommand");
+  }
+
+  @Test
+  public void shouldLogFinishEvenWithException() {
+    LogbackCapturingAppender capturing = LogbackCapturingAppender.weaveInto(LoggingCommandBus.LOG);
+
+    when(decorated.execute(any())).thenThrow(new IllegalStateException("failed"));
+
+    EchoCommand echoCommand = new EchoCommand("joe");
+    try {
+      loggingCommandBus.execute(echoCommand);
+    } catch (IllegalStateException ex) {
+      // expected
+    }
 
     List<String> messages = capturing.getCapturedLogMessages();
     assertThat(messages.get(0)).contains("start").contains("EchoCommand");

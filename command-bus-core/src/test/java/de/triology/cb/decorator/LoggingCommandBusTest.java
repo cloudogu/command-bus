@@ -47,10 +47,10 @@ import static org.mockito.Mockito.when;
 public class LoggingCommandBusTest {
 
   @Mock
-  private CommandBus decorated;
+  private CommandBus commandBus;
 
   @InjectMocks
-  private LoggingCommandBus loggingCommandBus;
+  private LoggingCommandBus decoratedCommandBus;
 
   @After
   public void cleanUp() {
@@ -62,8 +62,8 @@ public class LoggingCommandBusTest {
     LogbackCapturingAppender capturing = LogbackCapturingAppender.weaveInto(LoggingCommandBus.LOG);
 
     EchoCommand echoCommand = new EchoCommand("joe");
-    loggingCommandBus.execute(echoCommand);
-    verify(decorated).execute(echoCommand);
+    decoratedCommandBus.execute(echoCommand);
+    verify(commandBus).execute(echoCommand);
 
     List<String> messages = capturing.getCapturedLogMessages();
     assertThat(messages.get(0)).contains("start").contains("EchoCommand");
@@ -74,11 +74,11 @@ public class LoggingCommandBusTest {
   public void shouldLogFinishEvenWithException() {
     LogbackCapturingAppender capturing = LogbackCapturingAppender.weaveInto(LoggingCommandBus.LOG);
 
-    when(decorated.execute(any())).thenThrow(new IllegalStateException("failed"));
+    when(commandBus.execute(any())).thenThrow(new IllegalStateException("failed"));
 
     EchoCommand echoCommand = new EchoCommand("joe");
     try {
-      loggingCommandBus.execute(echoCommand);
+      decoratedCommandBus.execute(echoCommand);
     } catch (IllegalStateException ex) {
       // expected
     }
@@ -87,5 +87,4 @@ public class LoggingCommandBusTest {
     assertThat(messages.get(0)).contains("start").contains("EchoCommand");
     assertThat(messages.get(1)).contains("finish").contains("EchoCommand");
   }
-
 }

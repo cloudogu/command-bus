@@ -164,12 +164,12 @@ MicrometerTimingCommandBus commandBus = new MicrometerTimingCommandBus(commandBu
 
 ## Return values
 
-* `Command`s can specify return values. See [`HelloCommand`](command-bus-core/src/test/java/de/triology/cb/HelloCommand.java) and  [`de.triology.cb.EchoCommandHandler`](command-bus-core/src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
-* If you don't want a return value, use `Void`. See [`ByeCommand`](command-bus-core/src/test/java/de/triology/cb/ByeCommand.java) and  [`ByeCommandHandler`](command-bus-core/src/test/java/de/triology/cb/ByeCommandHandler.java) for example.
+* `Command`s can specify return values. See [`HelloCommand`](command-bus-cdi/src/test/java/de/triology/cb/HelloCommand.java) and  [`de.triology.cb.EchoCommandHandler`](command-bus-cdi/src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
+* If you don't want a return value, use `Void`. See [`ByeCommand`](command-bus-cdi/src/test/java/de/triology/cb/ByeCommand.java) and  [`ByeCommandHandler`](command-bus-cdi/src/test/java/de/triology/cb/ByeCommandHandler.java) for example.
 
 # Examples
 
 ## Spring
 
 * [cloudogu/smeagol](https://github.com/cloudogu/smeagol)
-* [cloudogu/springboot-micrometer-demo-command-bus](cloudogu/springboot-micrometer-demo-command-bus)
+* [cloudogu/springboot-micrometer-demo-command-bus](https://github.com/cloudogu/springboot-micrometer-demo-command-bus)

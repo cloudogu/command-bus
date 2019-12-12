@@ -34,9 +34,9 @@ CDI/Spring enabled Java Command-Bus
 
 ## Concepts
 
-* [`Command`](command-bus-core/src/main/java/de/triology/cb/Command.java) - Marker Interface
-* [`CommandHandler`](command-bus-core/src/main/java/de/triology/cb/CommandHandler.java) - One Implementation per `Command`. Provides `handle(CommandImplementation)` Method.
-* [`CommandBus`](command-bus-core/src/main/java/de/triology/cb/CommandBus.java) - Finds and calls the `CommandHandler` for each `Command`.
+* [`Command`](command-bus-core/src/main/java/com/cloudogu/cb/Command.java) - Marker Interface
+* [`CommandHandler`](command-bus-core/src/main/java/com/cloudogu/cb/CommandHandler.java) - One Implementation per `Command`. Provides `handle(CommandImplementation)` Method.
+* [`CommandBus`](command-bus-core/src/main/java/com/cloudogu/cb/CommandBus.java) - Finds and calls the `CommandHandler` for each `Command`.
 * `CommandBus` can be decorated, in order to implement cross-cutting concerns, such as logging, transaction handling, validation, autorization, metrics etc.
 
 ## Usage
@@ -85,34 +85,34 @@ There are different versions of command-bus for either CDI or spring.
 * Bootstrapping
   * CDI: Having the `command-bus-cdi` dependency on the classpath triggers the CDI extension
   * Spring: All CommandHandlers must be within the application context (e.g. `@Component` in spring boot)
-* Implement your [`Command`](command-bus-core/src/main/java/de/triology/cb/Command.java)s and the logic in appropriate 
-  [`CommandHandler`](command-bus-core/src/main/java/de/triology/cb/CommandHandler.java)s. 
-* You can now just inject the [`CommandBus`](command-bus-core/src/main/java/de/triology/cb/CommandBus.java) and pass your
+* Implement your [`Command`](command-bus-core/src/main/java/com/cloudogu/cb/Command.java)s and the logic in appropriate 
+  [`CommandHandler`](command-bus-core/src/main/java/com/cloudogu/cb/CommandHandler.java)s. 
+* You can now just inject the [`CommandBus`](command-bus-core/src/main/java/com/cloudogu/cb/CommandBus.java) and pass your
  `Commands` to its `execute()` method. It will automatically pass it to the appropriate handler.
 * Examples:
-  * [`CDIITCase`](command-bus-cdi/src/test/java/de/triology/cb/cdi/CDIITCase.java)
-  * [`SpringITCase`](command-bus-spring/src/test/java/de/triology/cb/spring/SpringITCase.java)
+  * [`CDIITCase`](command-bus-cdi/src/test/java/com/cloudogu/cb/cdi/CDIITCase.java)
+  * [`SpringITCase`](command-bus-spring/src/test/java/com/cloudogu/cb/spring/SpringITCase.java)
 * If you want to decorate your command bus (for logging, metrics, etc.), a factory/producer for the `CommandBus` is the
   central place where decorators can be instantiated.
-  It brings together your `CommandBus` (e.g. [`CDICommandBus`](command-bus-cdi/src/main/java/de/triology/cb/cdi/CDICommandBus.java),
-  [`SpringCommandBus`](command-bus-spring/src/main/java/de/triology/cb/spring/SpringCommandBus.java)) with decorators 
+  It brings together your `CommandBus` (e.g. [`CDICommandBus`](command-bus-cdi/src/main/java/com/cloudogu/cb/cdi/CDICommandBus.java),
+  [`SpringCommandBus`](command-bus-spring/src/main/java/com/cloudogu/cb/spring/SpringCommandBus.java)) with decorators 
   (see [bellow](#command-bus-decorators)).
   Example `CommandBusFactory`s:
-  * [CDI](command-bus-cdi/src/test/java/de/triology/cb/cdi/CommandBusFactory.java)
-  * [Spring](command-bus-spring/src/test/java/de/triology/cb/spring/CommandBusFactory.java)
+  * [CDI](command-bus-cdi/src/test/java/com/cloudogu/cb/cdi/CommandBusFactory.java)
+  * [Spring](command-bus-spring/src/test/java/com/cloudogu/cb/spring/CommandBusFactory.java)
    
 ### Internals
   
-The `CommandHandler`s for CDI and Spring both use a `Registry` ([CDI](command-bus-cdi/src/main/java/de/triology/cb/cdi/Registry.java) / 
-[Spring](command-bus-spring/src/main/java/de/triology/cb/spring/Registry.java)) to store `Command`s and 
+The `CommandHandler`s for CDI and Spring both use a `Registry` ([CDI](command-bus-cdi/src/main/java/com/cloudogu/cb/cdi/Registry.java) / 
+[Spring](command-bus-spring/src/main/java/com/cloudogu/cb/spring/Registry.java)) to store `Command`s and 
 `CommandHandler`s. Difference:
-* CDI: The [`CDIExtension`](command-bus-cdi/src/main/java/de/triology/cb/cdi/CDIExtension.java) finds all `Command`s 
+* CDI: The [`CDIExtension`](command-bus-cdi/src/main/java/com/cloudogu/cb/cdi/CDIExtension.java) finds all `Command`s 
     and `CommandHandler`s and puts them on the `Registry`.
 * Spring: The `Registry` itself gets all `Command`s and `CommandHandler`s from the application context.
 
 ## Command Bus Decorators
 
-First example is the logging decorator ([`LoggingCommandBus`](command-bus-core/src/main/java/de/triology/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
+First example is the logging decorator ([`LoggingCommandBus`](command-bus-core/src/main/java/com/cloudogu/cb/decorator/LoggingCommandBus.java)) that logs entering and leaving (including time of execution) of `CommandHandler`s.
 
 ### Prometheus metric decorators
 The Command Bus provides two Prometheus metrics decorators. More information on Prometheus can be found on the
@@ -188,8 +188,8 @@ commandBus.execute(command);
 
 ## Return values
 
-* `Command`s can specify return values. See [`HelloCommand`](command-bus-cdi/src/test/java/de/triology/cb/HelloCommand.java) and  [`de.triology.cb.EchoCommandHandler`](command-bus-cdi/src/test/java/de/triology/cb/HelloCommandHandler.java) for example.
-* If you don't want a return value, use `Void`. See [`ByeCommand`](command-bus-cdi/src/test/java/de/triology/cb/ByeCommand.java) and  [`ByeCommandHandler`](command-bus-cdi/src/test/java/de/triology/cb/ByeCommandHandler.java) for example.
+* `Command`s can specify return values. See [`HelloCommand`](command-bus-cdi/src/test/java/com/cloudogu/cb/HelloCommand.java) and  [`com.cloudogu.cb.EchoCommandHandler`](command-bus-cdi/src/test/java/com/cloudogu/cb/HelloCommandHandler.java) for example.
+* If you don't want a return value, use `Void`. See [`ByeCommand`](command-bus-cdi/src/test/java/com/cloudogu/cb/ByeCommand.java) and  [`ByeCommandHandler`](command-bus-cdi/src/test/java/com/cloudogu/cb/ByeCommandHandler.java) for example.
 
 # Examples
 

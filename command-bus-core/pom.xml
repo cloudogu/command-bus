@@ -3,7 +3,7 @@
 
     MIT License
 
-    Copyright (c) 2017 TRIOLOGY GmbH
+    Copyright (c) 2017 Cloudogu GmbH
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,7 @@
   <parent>
     <artifactId>command-bus-parent</artifactId>
     <groupId>com.cloudogu.cb</groupId>
-    <version>1.2.0</version>
+    <version>2.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 

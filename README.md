@@ -166,7 +166,8 @@ MicrometerTimingCommandBus commandBus = new MicrometerTimingCommandBus(commandBu
 
 ### Validating command bus
 The `ValidatingCommandBus` uses the `javax.validation` API to validate the command, before execution.
-The `CommandBus` will throw an `ConstraintViolationException`, if the command violates validation rules. 
+The `CommandBus` will throw an `ConstraintViolationException`, if the command violates validation rules.
+Make sure to provide `javax.validation` implementation at runtime, such as `org.hibernate:hibernate-validator`. 
 
 ```java
 public class NotifyCommand implements Command<Void> {

@@ -25,8 +25,10 @@ CDI/Spring enabled Java Command-Bus
     - [Micrometer metric decorators](#micrometer-metric-decorators)
       - [MicrometerCountingCommandBus](#micrometercountingcommandbus)
       - [MicrometerTimingCommandBus](#micrometertimingcommandbus)
+    - [Validating command bus](#validating-command-bus)
   - [Return values](#return-values)
 - [Examples](#examples)
+  - [Spring](#spring)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -160,6 +162,28 @@ MicrometerTimingCommandBus commandBus = new MicrometerTimingCommandBus(commandBu
     .tags("command", commandClass.getSimpleName())
     .register(Metrics.globalRegistry)
 );
+```
+
+### Validating command bus
+The `ValidatingCommandBus` uses the `javax.validation` API to validate the command, before execution.
+The `CommandBus` will throw an `ConstraintViolationException`, if the command violates validation rules.
+Make sure to provide `javax.validation` implementation at runtime, such as `org.hibernate:hibernate-validator`. 
+
+```java
+public class NotifyCommand implements Command<Void> {
+  @Email
+  private String email;
+
+  public SampleCommand(String email) {
+    this.email = email;
+  }
+}
+
+CommandBus commandBusImpl = ...;
+ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+ValidatingCommandBus commandBus = new ValidatingCommandBus(commandBusImpl, factory.getValidator());
+NotifyCommand command = createNotifyCommand();
+commandBus.execute(command);
 ```
 
 ## Return values

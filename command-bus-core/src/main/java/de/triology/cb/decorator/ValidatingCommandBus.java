@@ -25,36 +25,37 @@ package de.triology.cb.decorator;
 
 import de.triology.cb.Command;
 import de.triology.cb.CommandBus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+import java.util.Set;
 
 /**
- * Command bus decorator which logs every execution of a command with its elapsed time.
+ * Command bus decorator which validates the command before execution.
  */
-public class LoggingCommandBus implements CommandBus {
+public class ValidatingCommandBus implements CommandBus {
 
-  static final Logger LOG = LoggerFactory.getLogger(LoggingCommandBus.class);
-
-  private CommandBus decorated;
+  private final CommandBus decorated;
+  private final Validator validator;
 
   /**
-   * Creates a new command bus and delegates the execution to the given command.
+   * Creates a new ValidatingCommandBus
    *
    * @param decorated command bus to decorate
+   * @param validator validator
    */
-  public LoggingCommandBus(CommandBus decorated) {
+  public ValidatingCommandBus(CommandBus decorated, Validator validator) {
     this.decorated = decorated;
+    this.validator = validator;
   }
 
   @Override
   public <R, C extends Command<R>> R execute(C command) {
-    LOG.info("start command {}", command.getClass().getSimpleName());
-
-    Timer timer = new Timer();
-    try {
-      return decorated.execute(command);
-    } finally {
-      LOG.info("finished command {} in {}", command.getClass().getSimpleName(), timer);
+    Set<ConstraintViolation<C>> violations = validator.validate(command);
+    if (!violations.isEmpty()) {
+      throw new ConstraintViolationException(violations);
     }
+    return decorated.execute(command);
   }
 }

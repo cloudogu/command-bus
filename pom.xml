@@ -30,7 +30,7 @@
 
   <groupId>com.cloudogu.cb</groupId>
   <artifactId>command-bus-parent</artifactId>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
 
   <name>command-bus</name>
   <description>CDI enabled Java Command-Bus</description>

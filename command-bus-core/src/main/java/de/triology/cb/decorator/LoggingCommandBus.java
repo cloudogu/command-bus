@@ -51,10 +51,10 @@ public class LoggingCommandBus implements CommandBus {
     LOG.info("start command {}", command.getClass().getSimpleName());
 
     Timer timer = new Timer();
-    R returnValue = decorated.execute(command);
-
-    LOG.info("finished command {} in {}", command.getClass().getSimpleName(), timer);
-
-    return returnValue;
+    try {
+      return decorated.execute(command);
+    } finally {
+      LOG.info("finished command {} in {}", command.getClass().getSimpleName(), timer);
+    }
   }
 }

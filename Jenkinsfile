@@ -65,9 +65,6 @@ node {
   junit allowEmptyResults: true,
     testResults: '**/target/surefire-reports/TEST-*.xml, **/target/failsafe-reports/*.xml'
 
-  // Find maven warnings and visualize in job
-  warnings consoleParsers: [[parserName: 'Maven']]
-
   mailIfStatusChanged(git.commitAuthorEmail)
 }
 

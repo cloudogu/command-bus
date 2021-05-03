@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@6cff6d9d')
+@Library('github.com/cloudogu/ces-build-lib@1.47.0')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -13,6 +13,9 @@ node {
 
   def javaHome = tool 'JDK8'
   Maven mvn = new MavenWrapper(this, javaHome)
+  // Sonar stopped support for JRE8 for its client, so for now we run the analysis in a separate container.
+  // Once the lib is upgraded to JDK11 this can be removed
+  String SonarJreImage = 'adoptopenjdk/openjdk11:jre-11.0.11_9-alpine'
   Git git = new Git(this)
 
   catchError {
@@ -40,7 +43,7 @@ node {
     stage('Static Code Analysis') {
       def sonarQube = new SonarCloud(this, [sonarQubeEnv: 'sonarcloud.io-cloudogu'])
 
-      sonarQube.analyzeWith(mvn)
+      sonarQube.analyzeWith(new MavenWrapperInDocker(this, SonarJreImage))
 
       if (!sonarQube.waitForQualityGateWebhookToBeCalled()) {
         currentBuild.result ='UNSTABLE'

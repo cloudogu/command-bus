@@ -204,6 +204,9 @@
           <!-- skips surefire tests without skipping failsafe tests.
            Property value seems to magically default to false -->
           <skipTests>${skipUnitTests}</skipTests>
+          <forkCount>3</forkCount>
+          <reuseForks>true</reuseForks>
+          <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
         </configuration>
       </plugin>
 
@@ -241,6 +244,9 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <argLine>-Xmx1024m -XX:MaxPermSize=256m</argLine>
+        </configuration>
       </plugin>
 
     </plugins>

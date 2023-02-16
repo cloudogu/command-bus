@@ -1,5 +1,5 @@
 #!groovy
-@Library('github.com/cloudogu/ces-build-lib@1.47.0')
+@Library('github.com/cloudogu/ces-build-lib@1.63.0')
 import com.cloudogu.ces.cesbuildlib.*
 
 properties([
@@ -10,9 +10,7 @@ properties([
 ])
 
 node {
-
-  def javaHome = tool 'JDK8'
-  Maven mvn = new MavenWrapper(this, javaHome)
+  Maven mvn = new MavenWrapper(this)
   // Sonar stopped support for JRE8 for its client, so for now we run the analysis in a separate container.
   // Once the lib is upgraded to JDK11 this can be removed
   String SonarJreImage = 'adoptopenjdk/openjdk11:jre-11.0.11_9-alpine'

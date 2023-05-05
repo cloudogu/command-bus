@@ -42,6 +42,7 @@ node {
       def sonarQube = new SonarCloud(this, [sonarQubeEnv: 'sonarcloud.io-cloudogu'])
 
       sonarQube.analyzeWith(new MavenWrapperInDocker(this, SonarJreImage))
+      sonarQube.timeoutInMinutes = 5
 
       if (!sonarQube.waitForQualityGateWebhookToBeCalled()) {
         currentBuild.result ='UNSTABLE'

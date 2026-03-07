@@ -70,6 +70,10 @@ public class ValidatingCommandBusTest {
     @NotNull
     private final String value;
 
+    public String getValue() {
+      return this.value;
+    }
+
     public SampleCommandTest(@NotNull String value) {
       this.value = value;
     }

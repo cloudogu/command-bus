@@ -36,15 +36,15 @@ import java.util.Map;
 @Singleton
 public class Registry {
 
-  private final Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();
+  private final Map<Class<? extends Command<?>>, CommandProvider<?>> providerMap = new HashMap<>();
 
-  void register(Class<? extends Command> commandClass, CommandProvider provider){
+  void register(Class<? extends Command<?>> commandClass, CommandProvider<?> provider){
     providerMap.put(commandClass, provider);
   }
 
   @SuppressWarnings("unchecked")
   <R, C extends Command<R>> CommandHandler<R,C> get(Class<C> commandClass) {
-    return providerMap.get(commandClass).get();
+    return (CommandHandler<R, C>) providerMap.get(commandClass).get();
   }
 
 }

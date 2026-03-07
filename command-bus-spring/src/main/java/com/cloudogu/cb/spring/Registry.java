@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class Registry {
 
-  private final Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();
+  private final Map<Class<? extends Command<?>>, CommandProvider<?>> providerMap = new HashMap<>();
 
   @Autowired
   public Registry(ApplicationContext applicationContext) {
@@ -49,15 +49,15 @@ public class Registry {
   }
 
   private void register( ApplicationContext applicationContext, String name ){
-    Class<CommandHandler<?,?>> handlerClass = (Class<CommandHandler<?,?>>) applicationContext.getType(name);
+    Class<CommandHandler<?,?>> handlerClass = (Class<CommandHandler<?, ?>>) applicationContext.getType(name);
     Class<?>[] generics = GenericTypeResolver.resolveTypeArguments(handlerClass, CommandHandler.class);
-    Class<? extends Command> commandType = (Class<? extends Command>) generics[1];
-    providerMap.put(commandType, new CommandProvider(applicationContext, handlerClass));
+    Class<? extends Command<?>> commandType = (Class<? extends Command<?>>) generics[1];
+    providerMap.put(commandType, new CommandProvider<>(applicationContext, handlerClass));
   }
 
   @SuppressWarnings("unchecked")
   <R, C extends Command<R>> CommandHandler<R,C> get(Class<C> commandClass) {
-    return providerMap.get(commandClass).get();
+    return (CommandHandler<R, C>) providerMap.get(commandClass).get();
   }
 
 }

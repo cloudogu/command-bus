@@ -39,7 +39,7 @@ import javax.inject.Provider;
 public class CommandProvider<H extends CommandHandler<?, ?>> implements Provider<H> {
 
   private final BeanManager beanManager;
-  private final Class<? extends CommandHandler> handlerClass;
+  private final Class<? extends CommandHandler<?, ?>> handlerClass;
 
   CommandProvider(BeanManager beanManager, Class<? extends CommandHandler<?, ?>> handlerClass) {
     this.beanManager = beanManager;

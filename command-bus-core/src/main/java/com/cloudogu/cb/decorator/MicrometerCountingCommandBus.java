@@ -46,12 +46,12 @@ public class MicrometerCountingCommandBus implements CommandBus {
      * @param command class of command
      * @return Micrometer counter
      */
-    Counter create(Class<? extends Command> command);
+    Counter create(Class<? extends Command<?>> command);
   }
 
   private final CommandBus decorated;
   private final CounterFactory counterFactory;
-  private final Map<Class<? extends Command>,Counter> counters = new ConcurrentHashMap<>();
+  private final Map<Class<? extends Command<?>>,Counter> counters = new ConcurrentHashMap<>();
 
   /**
    * Creates a new {@link MicrometerCountingCommandBus}.
@@ -66,7 +66,7 @@ public class MicrometerCountingCommandBus implements CommandBus {
 
   @Override
   public <R, C extends Command<R>> R execute(C command) {
-    counters.computeIfAbsent(command.getClass(), counterFactory::create).increment();
+    counters.computeIfAbsent((Class<? extends Command<?>>) command.getClass(), counterFactory::create).increment();
     return decorated.execute(command);
   }
 }

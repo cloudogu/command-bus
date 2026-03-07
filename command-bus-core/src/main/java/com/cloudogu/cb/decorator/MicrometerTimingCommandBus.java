@@ -49,14 +49,14 @@ public class MicrometerTimingCommandBus implements CommandBus {
      * @param command class of command
      * @return Micrometer timer
      */
-    Timer create(Class<? extends Command> command);
+    Timer create(Class<? extends Command<?>> command);
   }
 
   private final CommandBus decorated;
   private final TimerFactory timerFactory;
   private final Clock clock;
 
-  private final Map<Class<? extends Command>, Timer> timers = new ConcurrentHashMap<>();
+  private final Map<Class<? extends Command<?>>, Timer> timers = new ConcurrentHashMap<>();
 
   /**
    * Creates a new {@link MicrometerTimingCommandBus}.
@@ -83,7 +83,7 @@ public class MicrometerTimingCommandBus implements CommandBus {
 
   @Override
   public <R, C extends Command<R>> R execute(C command) {
-    Timer timer = timers.computeIfAbsent(command.getClass(), timerFactory::create);
+    Timer timer = timers.computeIfAbsent((Class<? extends Command<?>>) command.getClass(), timerFactory::create);
 
     Instant now = Instant.now(clock);
     R result = decorated.execute(command);

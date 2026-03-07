@@ -40,7 +40,7 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class CDIExtension implements Extension {
 
-  private final Map<Class<? extends Command>, Class<? extends CommandHandler<?,?>>> commandHandlers = new HashMap<>();
+  private final Map<Class<? extends Command<?>>, Class<? extends CommandHandler<?,?>>> commandHandlers = new HashMap<>();
 
   /**
    * Captures all command handlers.
@@ -69,7 +69,7 @@ public class CDIExtension implements Extension {
   public void register(@Observes AfterDeploymentValidation event, final BeanManager beanManager) {
     Registry registry = getRegistry(beanManager);
     commandHandlers.forEach((commandClass, handlerClass) ->
-                              registry.register(commandClass, new CommandProvider(beanManager, handlerClass)));
+                              registry.register(commandClass, new CommandProvider<>(beanManager, handlerClass)));
   }
 
   private void register(Class<? extends Command<?>> command, Class<? extends CommandHandler<?, ?>> handler) {

@@ -31,8 +31,8 @@ import io.prometheus.client.Histogram;
  * Command bus decorator counting the executed commands using a Prometheus {@link Histogram}
  */
 public class PrometheusMetricsTimingCommandBus implements CommandBus {
-  private CommandBus decorated;
-  private Histogram histogram;
+  private final CommandBus decorated;
+  private final Histogram histogram;
 
 
   /**
@@ -47,8 +47,8 @@ public class PrometheusMetricsTimingCommandBus implements CommandBus {
   }
 
   /**
-   * Delegates the provided command to the decorated command bus and times the command's execution using it's
-   * classname as a label
+   * Delegates the provided command to the decorated command bus and times the command's execution using its
+   * class name as a label
    *
    * @param command command object
    * @param <R> type of return value

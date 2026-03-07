@@ -33,7 +33,7 @@ import javax.inject.Inject;
 
 public class CommandBusFactory {
 
-  private Registry registry;
+  private final Registry registry;
 
   @Inject
   public CommandBusFactory(Registry registry) {

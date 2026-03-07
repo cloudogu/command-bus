@@ -30,7 +30,7 @@ import org.springframework.context.annotation.Bean;
 
 public class CommandBusFactory {
 
-  private Registry registry;
+  private final Registry registry;
 
   @Autowired
   public CommandBusFactory(Registry registry) {

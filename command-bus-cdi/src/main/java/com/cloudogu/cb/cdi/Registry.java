@@ -36,7 +36,7 @@ import java.util.Map;
 @Singleton
 public class Registry {
 
-  private Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();
+  private final Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();
 
   void register(Class<? extends Command> commandClass, CommandProvider provider){
     providerMap.put(commandClass, provider);

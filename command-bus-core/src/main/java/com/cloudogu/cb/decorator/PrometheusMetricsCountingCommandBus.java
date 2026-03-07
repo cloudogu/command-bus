@@ -32,8 +32,8 @@ import io.prometheus.client.Counter;
  */
 public class PrometheusMetricsCountingCommandBus implements CommandBus {
 
-  private CommandBus decorated;
-  private Counter counter;
+  private final CommandBus decorated;
+  private final Counter counter;
 
   /**
    * Creates a new PrometheusMetricsCountingCommandBus

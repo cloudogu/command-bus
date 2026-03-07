@@ -28,7 +28,7 @@ import java.util.List;
 
 public class MessageCollector {
 
-  private List<String> messages = new ArrayList<>();
+  private final List<String> messages = new ArrayList<>();
 
   void add(String message) {
     messages.add(message);

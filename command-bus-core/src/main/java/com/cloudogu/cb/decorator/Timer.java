@@ -31,7 +31,7 @@ import java.util.concurrent.TimeUnit;
  */
 class Timer {
 
-  private long startedAt;
+  private final long startedAt;
 
   /**
    * Creates a new timer and captures the start date.

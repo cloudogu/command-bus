@@ -40,7 +40,7 @@ import java.util.Map;
 @SuppressWarnings("unchecked")
 public class CDIExtension implements Extension {
 
-  private Map<Class<? extends Command>, Class<? extends CommandHandler<?,?>>> commandHandlers = new HashMap<>();
+  private final Map<Class<? extends Command>, Class<? extends CommandHandler<?,?>>> commandHandlers = new HashMap<>();
 
   /**
    * Captures all command handlers.

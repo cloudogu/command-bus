@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class HelloCommandHandler implements CommandHandler<String, HelloCommand> {
 
-  private MessageCollector messageCollector;
+  private final MessageCollector messageCollector;
 
   @Autowired
   public HelloCommandHandler(MessageCollector messageCollector) {

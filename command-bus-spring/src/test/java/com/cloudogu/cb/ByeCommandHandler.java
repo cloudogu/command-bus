@@ -27,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class ByeCommandHandler implements CommandHandler<Void, ByeCommand> {
 
-  private MessageCollector messageCollector;
+  private final MessageCollector messageCollector;
 
   @Autowired
   public ByeCommandHandler(MessageCollector messageCollector) {

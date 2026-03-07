@@ -88,7 +88,7 @@ final class DurationFormatter {
       case NANOSECONDS:
         return "ns";
       case MICROSECONDS:
-        return "\u03bcs"; // μs
+        return "μs"; // μs
       case MILLISECONDS:
         return "ms";
       case SECONDS:

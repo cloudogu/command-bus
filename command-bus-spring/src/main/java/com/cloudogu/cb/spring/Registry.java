@@ -38,7 +38,7 @@ import java.util.Map;
  */
 public class Registry {
 
-  private Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();
+  private final Map<Class<? extends Command>, CommandProvider> providerMap = new HashMap<>();
 
   @Autowired
   public Registry(ApplicationContext applicationContext) {

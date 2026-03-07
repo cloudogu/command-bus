@@ -35,7 +35,7 @@ public class LoggingCommandBus implements CommandBus {
 
   static final Logger LOG = LoggerFactory.getLogger(LoggingCommandBus.class);
 
-  private CommandBus decorated;
+  private final CommandBus decorated;
 
   /**
    * Creates a new command bus and delegates the execution to the given command.

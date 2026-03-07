@@ -30,7 +30,7 @@ import java.util.List;
 @Singleton
 public class MessageCollector {
 
-  private List<String> messages = new ArrayList<>();
+  private final List<String> messages = new ArrayList<>();
 
   void add(String message) {
     messages.add(message);

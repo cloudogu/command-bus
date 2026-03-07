@@ -68,7 +68,7 @@ public class ValidatingCommandBusTest {
   public static class SampleCommand implements Command<Void> {
 
     @NotNull
-    private String value;
+    private final String value;
 
     public SampleCommand(@NotNull String value) {
       this.value = value;

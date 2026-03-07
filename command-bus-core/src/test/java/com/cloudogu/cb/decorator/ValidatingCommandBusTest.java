@@ -48,8 +48,9 @@ public class ValidatingCommandBusTest {
 
   @Before
   public void setUpCommandBus() {
-    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    decoratedCommandBus = new ValidatingCommandBus(commandBus,  factory.getValidator());
+    try (ValidatorFactory factory = Validation.buildDefaultValidatorFactory()) {
+      decoratedCommandBus = new ValidatingCommandBus(commandBus,  factory.getValidator());
+    }
   }
 
   @Test(expected = ConstraintViolationException.class)

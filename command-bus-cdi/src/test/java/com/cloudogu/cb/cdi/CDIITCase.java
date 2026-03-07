@@ -37,6 +37,7 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import java.io.File;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -49,7 +50,7 @@ public class CDIITCase {
       .addPackage(CommandBus.class.getPackage())
       .addPackage(CDIExtension.class.getPackage());
 
-    for (File file : new File("src/main/resources/META-INF").listFiles() ) {
+    for (File file : Objects.requireNonNull(new File("src/main/resources/META-INF").listFiles())) {
       archive.addAsManifestResource(file);
     }
 

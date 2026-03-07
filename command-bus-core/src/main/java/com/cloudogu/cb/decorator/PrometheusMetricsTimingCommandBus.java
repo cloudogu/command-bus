@@ -56,9 +56,10 @@ public class PrometheusMetricsTimingCommandBus implements CommandBus {
    */
   @Override
   public <R, C extends Command<R>> R execute(C command) {
-    Histogram.Timer commandTimer = histogram.labels(command.getClass().getSimpleName()).startTimer();
-    R result = decorated.execute(command);
-    commandTimer.observeDuration();
-    return result;
+    try (Histogram.Timer commandTimer = histogram.labels(command.getClass().getSimpleName()).startTimer()) {
+      R result = decorated.execute(command);
+      commandTimer.observeDuration();
+      return result;
+    }
   }
 }

@@ -134,7 +134,7 @@ The Command Bus provides two Micrometer metrics decorators. More information on 
 project's [website](https://micrometer.io).
 In order to use them, make sure to provide a micrometer registry implementation such as prometheus `io.micrometer:micrometer-registry-prometheus`.
 
-See [cloudogu/springboot-micrometer-demo-command-bus](cloudogu/springboot-micrometer-demo-command-bus) for a complete example.
+See [cloudogu/springboot-micrometer-demo-command-bus](https://github.com/cloudogu/springboot-micrometer-demo-command-bus) for a complete example.
 
 #### MicrometerCountingCommandBus
 

@@ -31,7 +31,6 @@ import org.springframework.context.ApplicationContext;
  *
  * @param <H> type of handler
  */
-@SuppressWarnings("unchecked")
 class CommandProvider<H extends CommandHandler<?, ?>> {
 
   private final ApplicationContext applicationContext;

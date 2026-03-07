@@ -55,22 +55,22 @@ public class ValidatingCommandBusTest {
 
   @Test(expected = ConstraintViolationException.class)
   public void shouldThrowValidationException() {
-    decoratedCommandBus.execute(new SampleCommand(null));
+    decoratedCommandBus.execute(new SampleCommandTest(null));
   }
 
   @Test
   public void shouldCallDecorated() {
-    SampleCommand command = new SampleCommand("valid");
+    SampleCommandTest command = new SampleCommandTest("valid");
     decoratedCommandBus.execute(command);
     verify(commandBus).execute(command);
   }
 
-  public static class SampleCommand implements Command<Void> {
+  public static class SampleCommandTest implements Command<Void> {
 
     @NotNull
     private final String value;
 
-    public SampleCommand(@NotNull String value) {
+    public SampleCommandTest(@NotNull String value) {
       this.value = value;
     }
   }

@@ -81,11 +81,11 @@ public class MicrometerTimingCommandBusTest {
     decoratedCommandBus.execute(new EchoCommand("hello"));
     verify(timerOne).record(Duration.of(1L, ChronoUnit.SECONDS));
 
-    decoratedCommandBus.execute(new OtherCommand());
+    decoratedCommandBus.execute(new OtherCommandTest());
     verify(timerTwo).record(Duration.of(1L, ChronoUnit.SECONDS));
   }
 
-  public static class OtherCommand implements Command<Void> {
+  public static class OtherCommandTest implements Command<Void> {
 
   }
 

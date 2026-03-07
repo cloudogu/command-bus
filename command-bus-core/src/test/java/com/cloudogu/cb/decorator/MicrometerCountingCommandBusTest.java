@@ -64,14 +64,14 @@ public class MicrometerCountingCommandBusTest {
   public void execute() {
     decoratedCommandBus.execute(new EchoCommand("hello"));
     decoratedCommandBus.execute(new EchoCommand("hello 2"));
-    decoratedCommandBus.execute(new OtherCommand());
-    decoratedCommandBus.execute(new OtherCommand());
+    decoratedCommandBus.execute(new OtherCommandTest());
+    decoratedCommandBus.execute(new OtherCommandTest());
 
     verify(counterOne, times(2)).increment();
     verify(counterTwo, times(2)).increment();
   }
 
-  public static class OtherCommand implements Command<Void> {
+  public static class OtherCommandTest implements Command<Void> {
 
   }
 
